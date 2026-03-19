@@ -1,5 +1,7 @@
-﻿
-Chapter 2: Routing Routing Pattern Overview
+﻿# Chapter 2: Routing
+
+## Routing Pattern Overview
+
 While sequential processing via prompt chaining is a foundational technique for executing deterministic, linear workflows with language models, its applicability is limited in scenarios requiring adaptive responses. Real-world agentic systems must often arbitrate between multiple potential actions based on contingent factors, such as the state of the environment, user input, or the outcome of a preceding operation. This capacity for dynamic decision-making, which governs the flow of control to different specialized functions, tools, or sub-processes, is achieved through a mechanism known as routing.
 
 Routing introduces conditional logic into an agent's operational framework, enabling a shift from a fixed execution path to a model where the agent dynamically evaluates specific criteria to select from a set of possible subsequent actions. This allows for more flexible and context-aware system behavior.
@@ -7,39 +9,26 @@ Routing introduces conditional logic into an agent's operational framework, enab
 For instance, an agent designed for customer inquiries, when equipped with a routing function, can first classify an incoming query to determine the user's intent. Based on this classification, it can then direct the query to a specialized agent for direct question-answering, a database retrieval tool for account information, or an escalation procedure for complex issues, rather than defaulting to a single, predetermined response pathway.  Therefore, a more sophisticated agent using routing could:
 
 1.  Analyze the user's query.
-2.  Route the query based on its intent:
-○   If the intent is "check order status", route to a sub-agent or tool chain that interacts with the order database.
-○   If the intent is "product information", route to a sub-agent or chain that searches the product catalog.
-○   If the intent is "technical support", route to a different chain that accesses troubleshooting guides or escalates to a human.
-○   If the intent is unclear, route to a clarification sub-agent or prompt chain.
+2.  **Route** the query based on its _intent_:
+    * If the intent is "check order status", route to a sub-agent or tool chain that interacts with the order database.
+    * If the intent is "product information", route to a sub-agent or chain that searches the product catalog.
+    * If the intent is "technical support", route to a different chain that accesses troubleshooting guides or escalates to a human.
+    * If the intent is unclear, route to a clarification sub-agent or prompt chain.
 
 The core component of the Routing pattern is a mechanism that performs the evaluation and directs the flow. This mechanism can be implemented in several ways:
 
-●   LLM-based Routing: The language model itself can be prompted to analyze the input and output a specific identifier or instruction that indicates the next step or destination. For example, a prompt might ask the LLM to "Analyze the following
-
-1
-
-user query and output only the category: 'Order Status', 'Product Info', 'Technical Support', or 'Other'." The agentic system then reads this output and directs the workflow accordingly.
-●   Embedding-based Routing: The input query can be converted into a vector embedding (see RAG, Chapter 14). This embedding is then compared to embeddings representing different routes or capabilities. The query is routed to the route whose embedding is most similar. This is useful for semantic routing, where the decision is based on the meaning of the input rather than just keywords.
-●   Rule-based Routing: This involves using predefined rules or logic (e.g., if-else statements, switch cases) based on keywords, patterns, or structured data extracted from the input. This can be faster and more deterministic than
-LLM-based routing, but is less flexible for handling nuanced or novel inputs.
-●   Machine Learning Model-Based Routing: it employs a discriminative model, such as a classifier, that has been specifically trained on a small corpus of labeled data to perform a routing task. While it shares conceptual similarities with embedding-based methods, its key characteristic is the supervised fine-tuning process, which adjusts the model's parameters to create a specialized routing function. This technique is distinct from LLM-based routing because the
-decision-making component is not a generative model executing a prompt at inference time. Instead, the routing logic is encoded within the fine-tuned model's learned weights. While LLMs may be used in a pre-processing step to generate synthetic data for augmenting the training set, they are not involved in the
-real-time routing decision itself.
+* **LLM-based Routing**: The language model itself can be prompted to analyze the input and output a specific identifier or instruction that indicates the next step or destination. For example, a prompt might ask the LLM to "Analyze the following user query and output only the category: 'Order Status', 'Product Info', 'Technical Support', or 'Other'." The agentic system then reads this output and directs the workflow accordingly.
+* **Embedding-based Routing**: The input query can be converted into a vector embedding (see RAG, Chapter 14). This embedding is then compared to embeddings representing different routes or capabilities. The query is routed to the route whose embedding is most similar. This is useful for semantic routing, where the decision is based on the meaning of the input rather than just keywords.
+* **Rule-based Routing**: This involves using predefined rules or logic (e.g., if-else statements, switch cases) based on keywords, patterns, or structured data extracted from the input. This can be faster and more deterministic than LLM-based routing, but is less flexible for handling nuanced or novel inputs.
+* **Machine Learning Model-Based Routing**: it employs a discriminative model, such as a classifier, that has been specifically trained on a small corpus of labeled data to perform a routing task. While it shares conceptual similarities with embedding-based methods, its key characteristic is the supervised fine-tuning process, which adjusts the model's parameters to create a specialized routing function. This technique is distinct from LLM-based routing because the decision-making component is not a generative model executing a prompt at inference time. Instead, the routing logic is encoded within the fine-tuned model's learned weights. While LLMs may be used in a pre-processing step to generate synthetic data for augmenting the training set, they are not involved in the real-time routing decision itself.
 
 Routing mechanisms can be implemented at multiple junctures within an agent's operational cycle. They can be applied at the outset to classify a primary task, at intermediate points within a processing chain to determine a subsequent action, or during a subroutine to select the most appropriate tool from a given set.
 
-Computational frameworks such as LangChain, LangGraph, and Google's Agent Developer Kit (ADK) provide explicit constructs for defining and managing such conditional logic. With its state-based graph architecture, LangGraph is particularly well-suited for complex routing scenarios where decisions are contingent upon the accumulated state of the entire system. Similarly, Google's ADK provides foundational components for structuring an agent's capabilities and interaction models, which serve as the basis for implementing routing logic. Within the execution environments provided by these frameworks, developers define the possible operational paths and
-
-
-
-2
-
-the functions or model-based evaluations that dictate the transitions between nodes in the computational graph.
+Computational frameworks such as LangChain, LangGraph, and Google's Agent Developer Kit (ADK) provide explicit constructs for defining and managing such conditional logic. With its state-based graph architecture, LangGraph is particularly well-suited for complex routing scenarios where decisions are contingent upon the accumulated state of the entire system. Similarly, Google's ADK provides foundational components for structuring an agent's capabilities and interaction models, which serve as the basis for implementing routing logic. Within the execution environments provided by these frameworks, developers define the possible operational paths and the functions or model-based evaluations that dictate the transitions between nodes in the computational graph.
 
 The implementation of routing enables a system to move beyond deterministic sequential processing. It facilitates the development of more adaptive execution flows that can respond dynamically and appropriately to a wider range of inputs and state changes.
 
-Practical Applications & Use Cases
+## Practical Applications & Use Cases
 
 The routing pattern is a critical control mechanism in the design of adaptive agentic systems, enabling them to dynamically alter their execution path in response to variable inputs and internal states. Its utility spans multiple domains by providing a necessary layer of conditional logic.
 
@@ -49,15 +38,9 @@ Within automated data and document processing pipelines, routing serves as a cla
 
 In complex systems involving multiple specialized tools or agents, routing acts as a high-level dispatcher. A research system composed of distinct agents for searching, summarizing, and analyzing information would use a router to assign tasks to the most suitable agent based on the current objective. Similarly, an AI coding assistant uses routing to identify the programming language and user's intent—to debug, explain, or translate—before passing a code snippet to the correct specialized tool.
 
-Ultimately, routing provides the capacity for logical arbitration that is essential for creating functionally diverse and context-aware systems. It transforms an agent from a static executor of pre-defined sequences into a dynamic system that can make
+Ultimately, routing provides the capacity for logical arbitration that is essential for creating functionally diverse and context-aware systems. It transforms an agent from a static executor of pre-defined sequences into a dynamic system that can make decisions about the most effective method for accomplishing a task under changing conditions.
 
-
-
-3
-
-decisions about the most effective method for accomplishing a task under changing conditions.
-
-Hands-On Code Example (LangChain)
+## Hands-On Code Example (LangChain)
 
 Implementing routing in code involves defining the possible paths and the logic that decides which path to take. Frameworks like LangChain and LangGraph provide specific components and structures for this. LangGraph's state-based graph structure is particularly intuitive for visualizing and implementing routing logic.
 
@@ -65,13 +48,13 @@ This code demonstrates a simple agent-like system using LangChain and Google's G
 
 First, ensure you have the necessary libraries installed:
 
-
+```bash
 pip install langchain langgraph google-cloud-aiplatform langchain-google-genai google-adk deprecated pydantic
-
+```
 
 You will also need to set up your environment with your API key for the language model you choose (e.g., OpenAI, Google Gemini, Anthropic).
 
-
+```python
 # Copyright (c) 2025 Marco Fago
 # https://www.linkedin.com/in/marco-fago/ #
 # This code is licensed under the MIT License.
@@ -83,10 +66,6 @@ from langchain_google_genai import ChatGoogleGenerativeAI from langchain_core.pr
 # Ensure your API key environment variable is set (e.g., GOOGLE_API_KEY)
 try:
 llm = ChatGoogleGenerativeAI(model="gemini-2.5-flash",
-
-
-4
-
 
 temperature=0)
 print(f"Language model initialized: {llm.model}") except Exception as e:
@@ -120,9 +99,6 @@ coordinator_router_chain = coordinator_router_prompt | llm | StrOutputParser()
 
 # --- Define the Delegation Logic (equivalent to ADK's Auto-Flow
 
-5
-
-
 based on sub_agents) ---
 # Use RunnableBranch to route based on the router chain's output.
 
@@ -153,19 +129,15 @@ return
 print("--- Running with a booking request ---") request_a = "Book me a flight to London."
 result_a = coordinator_agent.invoke({"request": request_a}) print(f"Final Result A: {result_a}")
 
-6
-
-
-
 print("\n--- Running with an info request ---") request_b = "What is the capital of Italy?"
 result_b = coordinator_agent.invoke({"request": request_b}) print(f"Final Result B: {result_b}")
 
 print("\n--- Running with an unclear request ---") request_c = "Tell me about quantum physics."
 result_c = coordinator_agent.invoke({"request": request_c}) print(f"Final Result C: {result_c}")
 
-if __name__ == "__main__": main()
-
-
+if __name__ == "__main__":
+    main()
+```
 
 As mentioned, this Python code constructs a simple agent-like system using the LangChain library and Google's Generative AI model, specifically gemini-2.5-flash. In detail, It defines three simulated sub-agent handlers: booking_handler, info_handler, and unclear_handler, each designed to process specific types of requests.
 
@@ -173,18 +145,13 @@ A core component is the coordinator_router_chain, which utilizes a ChatPromptTem
 
 The main function demonstrates the system's usage with three example requests, showcasing how different inputs are routed and processed by the simulated agents. Error handling for language model initialization is included to ensure robustness. The code structure mimics a basic multi-agent framework where a central coordinator delegates tasks to specialized agents based on intent.
 
-Hands-On Code Example (Google ADK)
+## Hands-On Code Example (Google ADK)
 
-The Agent Development Kit (ADK) is a framework for engineering agentic systems, providing a structured environment for defining an agent's capabilities and behaviours. In contrast to architectures based on explicit computational graphs,
-
-
-7
-
-routing within the ADK paradigm is typically implemented by defining a discrete set of "tools" that represent the agent's functions. The selection of the appropriate tool in response to a user query is managed by the framework's internal logic, which leverages an underlying model to match user intent to the correct functional handler.
+The Agent Development Kit (ADK) is a framework for engineering agentic systems, providing a structured environment for defining an agent's capabilities and behaviours. In contrast to architectures based on explicit computational graphs, routing within the ADK paradigm is typically implemented by defining a discrete set of "tools" that represent the agent's functions. The selection of the appropriate tool in response to a user query is managed by the framework's internal logic, which leverages an underlying model to match user intent to the correct functional handler.
 
 This Python code demonstrates an example of an Agent Development Kit (ADK) application using Google's ADK library. It sets up a "Coordinator" agent that routes user requests to specialized sub-agents ("Booker" for bookings and "Info" for general information) based on defined instructions. The sub-agents then use specific tools to simulate handling the requests, showcasing a basic delegation pattern within an agent system
 
-
+```python
 # Copyright (c) 2025 Marco Fago #
 # This code is licensed under the MIT License.
 # See the LICENSE file in the repository for the full license text.
@@ -208,9 +175,6 @@ return f"Booking action for '{request}' has been simulated."
 
 def info_handler(request: str) -> str: """
 Handles general information requests. Args:
-
-8
-
 
 request: The user's question. Returns:
 A message indicating the information request was handled. """
@@ -240,9 +204,6 @@ name="Coordinator", model="gemini-2.0-flash", instruction=(
 "- For any requests related to booking flights or hotels, delegate to the 'Booker' agent.\n"
 "- For all other general information questions, delegate to
 
-9
-
-
 the 'Info' agent." ),
 description="A coordinator that routes user requests to the correct specialist agent.",
 # The presence of sub_agents enables LLM-driven delegation (Auto-Flow) by default.
@@ -270,9 +231,6 @@ text_parts = [part.text for part in event.content.parts if part.text]
 final_result = "".join(text_parts)
 # Assuming the loop should break after the final
 
-10
-
-
 response
 break
 
@@ -297,55 +255,23 @@ result_d = await run_coordinator(runner, "Find flights to Tokyo next month.") # 
 print(f"Final Output D: {result_d}")
 
 if __name__ == "__main__": import nest_asyncio nest_asyncio.apply() await main()
-
-
+```
 
 This script consists of a main Coordinator agent and two specialized sub_agents: Booker and Info. Each specialized agent is equipped with a FunctionTool that wraps a Python function simulating an action. The booking_handler function simulates handling flight and hotel bookings, while the info_handler function simulates retrieving general information. The unclear_handler is included as a fallback for requests the coordinator cannot delegate, although the current coordinator logic doesn't explicitly use it for delegation failure in the main run_coordinator function.
-
-
-11
 
 The Coordinator agent's primary role, as defined in its instruction, is to analyze incoming user messages and delegate them to either the Booker or Info agent. This delegation is handled automatically by the ADK's Auto-Flow mechanism because the Coordinator has sub_agents defined. The run_coordinator function sets up an InMemoryRunner, creates a user and session ID, and then uses the runner to process the user's request through the coordinator agent. The runner.run method processes the request and yields events, and the code extracts the final response text from the event.content.
 
 The main function demonstrates the system's usage by running the coordinator with different requests, showcasing how it delegates booking requests to the Booker and information requests to the Info agent.
 
-At a Glance
+## At a Glance
 
-What: Agentic systems must often respond to a wide variety of inputs and situations that cannot be handled by a single, linear process. A simple sequential workflow lacks the ability to make decisions based on context. Without a mechanism to choose the correct tool or sub-process for a specific task, the system remains rigid and
-non-adaptive. This limitation makes it dificult to build sophisticated applications that can manage the complexity and variability of real-world user requests.
+**What**: Agentic systems must often respond to a wide variety of inputs and situations that cannot be handled by a single, linear process. A simple sequential workflow lacks the ability to make decisions based on context. Without a mechanism to choose the correct tool or sub-process for a specific task, the system remains rigid and non-adaptive. This limitation makes it dificult to build sophisticated applications that can manage the complexity and variability of real-world user requests.
 
-Why: The Routing pattern provides a standardized solution by introducing conditional logic into an agent's operational framework. It enables the system to first analyze an incoming query to determine its intent or nature. Based on this analysis, the agent dynamically directs the flow of control to the most appropriate specialized tool, function, or sub-agent. This decision can be driven by various methods, including prompting LLMs, applying predefined rules, or using embedding-based semantic similarity. Ultimately, routing transforms a static, predetermined execution path into a flexible and context-aware workflow capable of selecting the best possible action.
+**Why**: The Routing pattern provides a standardized solution by introducing conditional logic into an agent's operational framework. It enables the system to first analyze an incoming query to determine its intent or nature. Based on this analysis, the agent dynamically directs the flow of control to the most appropriate specialized tool, function, or sub-agent. This decision can be driven by various methods, including prompting LLMs, applying predefined rules, or using embedding-based semantic similarity. Ultimately, routing transforms a static, predetermined execution path into a flexible and context-aware workflow capable of selecting the best possible action.
 
-Rule of Thumb: Use the Routing pattern when an agent must decide between multiple distinct workflows, tools, or sub-agents based on the user's input or the current state. It is essential for applications that need to triage or classify incoming requests to handle different types of tasks, such as a customer support bot distinguishing between sales inquiries, technical support, and account management questions.
+**Rule of Thumb**: Use the Routing pattern when an agent must decide between multiple distinct workflows, tools, or sub-agents based on the user's input or the current state. It is essential for applications that need to triage or classify incoming requests to handle different types of tasks, such as a customer support bot distinguishing between sales inquiries, technical support, and account management questions.
 
-Visual Summary:
-
-
-12
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+**Visual Summary**:
 
 
 
@@ -353,22 +279,16 @@ Visual Summary:
 
 Fig.1: Router pattern, using an LLM as a Router
 
+## Key Takeaways
 
-Key Takeaways
+* Routing enables agents to make dynamic decisions about the next step in a workflow based on conditions.
+* It allows agents to handle diverse inputs and adapt their behavior, moving beyond linear execution.
+* Routing logic can be implemented using LLMs, rule-based systems, or embedding similarity.
+* Frameworks like LangGraph and Google ADK provide structured ways to define and manage routing within agent workflows, albeit with different architectural approaches.
 
-●   Routing enables agents to make dynamic decisions about the next step in a workflow based on conditions.
-●   It allows agents to handle diverse inputs and adapt their behavior, moving beyond linear execution.
-●   Routing logic can be implemented using LLMs, rule-based systems, or embedding similarity.
-●   Frameworks like LangGraph and Google ADK provide structured ways to define and manage routing within agent workflows, albeit with different architectural approaches.
+## Conclusion
 
-Conclusion
-
-The Routing pattern is a critical step in building truly dynamic and responsive agentic systems. By implementing routing, we move beyond simple, linear execution flows and
-
-
-13
-
-empower our agents to make intelligent decisions about how to process information, respond to user input, and utilize available tools or sub-agents.
+The Routing pattern is a critical step in building truly dynamic and responsive agentic systems. By implementing routing, we move beyond simple, linear execution flows and empower our agents to make intelligent decisions about how to process information, respond to user input, and utilize available tools or sub-agents.
 
 We've seen how routing can be applied in various domains, from customer service chatbots to complex data processing pipelines. The ability to analyze input and conditionally direct the workflow is fundamental to creating agents that can handle the inherent variability of real-world tasks.
 
@@ -376,31 +296,7 @@ The code examples using LangChain and Google ADK demonstrate two different, yet 
 
 Mastering the Routing pattern is essential for building agents that can intelligently navigate different scenarios and provide tailored responses or actions based on context. It's a key component in creating versatile and robust agentic applications.
 
-References
+## References
 
 1.  LangGraph Documentation: https://www.langchain.com/
 2.  Google Agent Developer Kit Documentation: https://google.github.io/adk-docs/
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-14
