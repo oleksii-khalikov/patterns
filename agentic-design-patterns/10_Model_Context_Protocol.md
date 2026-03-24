@@ -1,4 +1,4 @@
-﻿# Chapter 10: Model Context Protocol
+﻿# Model Context Protocol
 
 To enable LLMs to function effectively as agents, their capabilities must extend beyond multimodal generation. Interaction with the external environment is necessary, including access to current data, utilization of external software, and execution of specific operational tasks. The Model Context Protocol (MCP) addresses this need by providing a standardized interface for LLMs to interface with external resources. This protocol serves as a key mechanism to facilitate consistent and predictable integration.
 
@@ -252,7 +252,29 @@ To begin, open a new terminal and run `python fastmcp_server.py` to start the Fa
 
 **Visual summary**
 
+```mermaid
+graph TD
+    User["👤 User"]
+    Prompt["✨ Prompt"]
+    Agent["🧠 Agent<br/>MCP Client"]
+    MCPServer["🔗 MCP Server"]
+    Tools["🔧 Tools"]
+    APIs["📁 APIs"]
+    Legacy["⚙️ Legacy Services"]
+    Data["🗄️ Data Services<br/>Web Page, External<br/>Databases etc."]
+    Wrappers["📚 Wrappers"]
 
+    User -->|prompt| Prompt
+    Prompt -->|send| Agent
+    Agent -->|output| User
+    Agent <-->|call| MCPServer
+    MCPServer <--> Tools
+    MCPServer <--> APIs
+    MCPServer <--> Legacy
+    MCPServer <--> Data
+    MCPServer --> Wrappers
+
+```
 Fig.1: Model Context protocol
 
 ## Key Takeaways

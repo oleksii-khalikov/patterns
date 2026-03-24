@@ -1,4 +1,4 @@
-﻿# Chapter 2: Routing
+﻿# Routing
 
 ## Routing Pattern Overview
 
@@ -18,7 +18,7 @@ For instance, an agent designed for customer inquiries, when equipped with a rou
 The core component of the Routing pattern is a mechanism that performs the evaluation and directs the flow. This mechanism can be implemented in several ways:
 
 * **LLM-based Routing**: The language model itself can be prompted to analyze the input and output a specific identifier or instruction that indicates the next step or destination. For example, a prompt might ask the LLM to "Analyze the following user query and output only the category: 'Order Status', 'Product Info', 'Technical Support', or 'Other'." The agentic system then reads this output and directs the workflow accordingly.
-* **Embedding-based Routing**: The input query can be converted into a vector embedding (see RAG, Chapter 14). This embedding is then compared to embeddings representing different routes or capabilities. The query is routed to the route whose embedding is most similar. This is useful for semantic routing, where the decision is based on the meaning of the input rather than just keywords.
+* **Embedding-based Routing**: The input query can be converted into a vector embedding (see [RAG](14_Knowledge_Retrieval.md)). This embedding is then compared to embeddings representing different routes or capabilities. The query is routed to the route whose embedding is most similar. This is useful for semantic routing, where the decision is based on the meaning of the input rather than just keywords.
 * **Rule-based Routing**: This involves using predefined rules or logic (e.g., if-else statements, switch cases) based on keywords, patterns, or structured data extracted from the input. This can be faster and more deterministic than LLM-based routing, but is less flexible for handling nuanced or novel inputs.
 * **Machine Learning Model-Based Routing**: it employs a discriminative model, such as a classifier, that has been specifically trained on a small corpus of labeled data to perform a routing task. While it shares conceptual similarities with embedding-based methods, its key characteristic is the supervised fine-tuning process, which adjusts the model's parameters to create a specialized routing function. This technique is distinct from LLM-based routing because the decision-making component is not a generative model executing a prompt at inference time. Instead, the routing logic is encoded within the fine-tuned model's learned weights. While LLMs may be used in a pre-processing step to generate synthetic data for augmenting the training set, they are not involved in the real-time routing decision itself.
 
@@ -273,9 +273,27 @@ The main function demonstrates the system's usage by running the coordinator wit
 
 **Visual Summary**:
 
-
-
-
+```mermaid
+graph LR
+    User["👤 User"]
+    Prompt["✨ Prompt"]
+    Router["🧠 LLM Router"]
+    Agent1["🤖 Agent"]
+    Agent2["🤖 Agent"]
+    Other["• • •"]
+    Output1["📤 Output"]
+    Output2["📤 Output"]
+    
+    User -->|Input| Prompt
+    Prompt -->|Send| Router
+    Router -->|Route| Agent1
+    Router -->|Route| Other
+    Router -->|Route| Agent2
+    Agent1 -->|Process| Output1
+    Agent2 -->|Process| Output2
+    Output1 -->|Return| User
+    Output2 -->|Return| User
+```
 
 Fig.1: Router pattern, using an LLM as a Router
 

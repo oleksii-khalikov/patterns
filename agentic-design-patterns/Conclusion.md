@@ -2,7 +2,7 @@
 
 Throughout this book  we have journeyed from the foundational concepts of agentic AI to the practical implementation of sophisticated, autonomous systems. We began with the premise that building intelligent agents is akin to creating a complex work of art on a technical canvas—a process that requires not just a powerful cognitive engine like a large language model, but also a robust set of architectural blueprints. These blueprints, or agentic patterns, provide the structure and reliability needed to transform simple, reactive models into proactive, goal-oriented entities capable of complex reasoning and action.
 
-This concluding chapter will synthesize the core principles we have explored. We will first review the key agentic patterns, grouping them into a cohesive framework that underscores their collective importance. Next, we will examine how these individual patterns can be composed into more complex systems, creating a powerful synergy. Finally, we will look ahead to the future of agent development, exploring the emerging trends and challenges that will shape the next generation of intelligent systems.
+This concluding will synthesize the core principles we have explored. We will first review the key agentic patterns, grouping them into a cohesive framework that underscores their collective importance. Next, we will examine how these individual patterns can be composed into more complex systems, creating a powerful synergy. Finally, we will look ahead to the future of agent development, exploring the emerging trends and challenges that will shape the next generation of intelligent systems.
 
 ## Review of key agentic principles
 

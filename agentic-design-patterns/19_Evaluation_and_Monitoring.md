@@ -1,8 +1,24 @@
-﻿# Chapter 19: Evaluation and Monitoring
+﻿# Evaluation and Monitoring
 
-This chapter examines methodologies that allow intelligent agents to systematically assess their performance, monitor progress toward goals, and detect operational anomalies. While Chapter 11 outlines goal setting and monitoring, and Chapter 17 addresses Reasoning mechanisms, this chapter focuses on the continuous, often external, measurement of an agent's effectiveness, eficiency, and compliance with requirements. This includes defining metrics, establishing feedback loops, and implementing reporting systems to ensure agent performance aligns with expectations in operational environments (see Fig.1)
+This document examines methodologies that allow intelligent agents to systematically assess their performance, monitor progress toward goals, and detect operational anomalies. The document focuses on the continuous, often external, measurement of an agent's effectiveness, eficiency, and compliance with requirements. This includes defining metrics, establishing feedback loops, and implementing reporting systems to ensure agent performance aligns with expectations in operational environments (see Fig.1)
 
-
+```mermaid
+graph TD
+    Title["<b>Monitoring and Evaluating Agent Performance</b>"]
+    
+    Title --> L1["<b style='font-size:24px'>01</b><br/>Define clear and measurable<br/>objectives and indicators"]
+    L1 --> L2["<b style='font-size:24px'>02</b><br/>Use a combination of<br/>quantitative and qualitative data"]
+    L2 --> L3["<b style='font-size:24px'>03</b><br/>Collect data regularly and<br/>consistently"]
+    L3 --> L4["<b style='font-size:24px'>04</b><br/>Reward and incentivize your<br/>agents"]
+    L4 --> L5["<b style='font-size:24px'>05</b><br/>Provide feedback and<br/>coaching"]
+    
+    style L1 fill:#FF6B4A,stroke:#333,stroke-width:2px,color:#000
+    style L2 fill:#FFB366,stroke:#333,stroke-width:2px,color:#000
+    style L3 fill:#B88EC7,stroke:#333,stroke-width:2px,color:#000
+    style L4 fill:#66CCFF,stroke:#333,stroke-width:2px,color:#000
+    style L5 fill:#66CC99,stroke:#333,stroke-width:2px,color:#000
+    style Title fill:#fff,stroke:none,color:#000
+```
 Fig:1. Best practices for evaluation and monitoring
 
 ## Practical Applications & Use Cases
@@ -232,8 +248,7 @@ To do this, you ask key questions about the team's dynamics, supported by concre
 * Are the agents cooperating effectively? For instance, after a 'Flight-Booking Agent' secures a flight, does it successfully pass the correct dates and destination to the 'Hotel-Booking Agent'? A failure in cooperation could lead to a hotel being booked for the wrong week.
 * Did they create a good plan and stick to it? Imagine the plan is to first book a flight, then a hotel. If the 'Hotel Agent' tries to book a room before the flight is confirmed, it has deviated from the plan. You also check if an agent gets stuck, for example, endlessly searching for a "perfect" rental car and never moving on to the next step.
 * Is the right agent being chosen for the right task? If a user asks about the weather for their trip, the system should use a specialized 'Weather Agent' that provides live data. If it instead uses a 'General Knowledge Agent' that gives a generic answer like "it's usually warm in summer," it has chosen the wrong tool for the job.
-* Finally, does adding more agents improve performance? If you add a new 'Restaurant-Reservation Agent' to the team, does it make the overall
-trip-planning better and more eficient? Or does it create conflicts and slow the system down, indicating a problem with scalability?.
+* Finally, does adding more agents improve performance? If you add a new 'Restaurant-Reservation Agent' to the team, does it make the overall trip-planning better and more eficient? Or does it create conflicts and slow the system down, indicating a problem with scalability?.
 
 ## From Agents to Advanced Contractors
 
@@ -245,7 +260,24 @@ First is the pillar of the Formalized Contract, a detailed specification that se
 
 Second is the pillar of a Dynamic Lifecycle of Negotiation and Feedback. The contract is not a static command but the start of a dialogue. The contractor agent can analyze the initial terms and negotiate. For instance, if a contract demands the use of a specific proprietary data source the agent cannot access, it can return feedback stating, "The specified XYZ database is inaccessible. Please provide credentials or approve the use of an alternative public database, which may slightly alter the data's granularity." This negotiation phase, which also allows the agent to flag ambiguities or potential risks, resolves misunderstandings before execution begins, preventing costly failures and ensuring the final output aligns perfectly with the user's actual intent.
 
+```mermaid
+graph TD
+    A["Contract Submitted"]
+    B["Contract Assessment<br/>(Assessing feasibility,<br/>cost, and duration)"]
+    C["Contract Revision<br/>(Suggesting contract<br/>modifications)"]
+    D["Contract Execution<br/>(Generating plan,<br/>Executing tasks,<br/>Generating subcontracts)"]
+    E["Task Resolution<br/>(Candidate generation,<br/>Candidate review,<br/>Candidate scoring,<br/>Candidate ranking,<br/>Candidate evolution)"]
+    F["Contract Deliverables"]
 
+    A --> B
+    C -.->|Contract revision<br/>accepted or rejected| C
+    B -->|Contract revision<br/>requested| C
+    B -->|Contract accepted| D
+    D -->|Suggest revision| C
+    D -.->|Subcontract<br/>generated| D
+    D --> E
+    D --> F
+```
 Fig. 2: Contract execution example among agents
 
 The third pillar is Quality-Focused Iterative Execution. Unlike agents designed for low-latency responses, a contractor prioritizes correctness and quality. It operates on a principle of self-validation and correction. For a code generation contract, for example, the agent would not just write the code; it would generate multiple algorithmic approaches, compile and run them against a suite of unit tests defined within the contract, score each solution on metrics like performance, security, and readability, and only submit the version that passes all validation criteria. This internal loop of generating, reviewing, and improving its own work until the contract's specifications are met is crucial for building trust in its outputs.
@@ -256,10 +288,7 @@ Ultimately, this contractor framework reimagines AI interaction by embedding pri
 
 ## Google's ADK
 
-Before concluding, let's look at a concrete example of a framework that supports evaluation. Agent evaluation with Google's ADK (see Fig.3) can be conducted via three methods: web-based UI (adk web) for interactive evaluation and dataset generation, programmatic integration using pytest for incorporation into testing pipelines, and direct command-line interface (adk eval) for automated evaluations suitable for regular build generation and verification processes.
-
-
-Fig.3: Evaluation Support for Google ADK
+Before concluding, let's look at a concrete example of a framework that supports evaluation. Agent evaluation with Google's ADK can be conducted via three methods: web-based UI (adk web) for interactive evaluation and dataset generation, programmatic integration using pytest for incorporation into testing pipelines, and direct command-line interface (adk eval) for automated evaluations suitable for regular build generation and verification processes.
 
 The web-based UI enables interactive session creation and saving into existing or new eval sets, displaying evaluation status. Pytest integration allows running test files as part of integration tests by calling AgentEvaluator.evaluate, specifying the agent module and test file path.
 
@@ -275,8 +304,24 @@ The command-line interface facilitates automated evaluation by providing the age
 
 **Visual summary**
 
-
-Fig.4: Evaluation and Monitoring design pattern
+```mermaid
+flowchart LR
+    User["👤 User"]
+    Prompt[✨ Prompt]
+    Agent[🧠 Agent]
+    Output[📄 Output]
+    ObserverMetrics[👁️ Observer<br/>Metrics]
+    Alarm[🔔 Alarm]
+    
+    User --> Prompt
+    Prompt --> Agent
+    Agent <--> ObserverMetrics
+    Agent --> Output
+    ObserverMetrics --> Alarm
+    ObserverMetrics --> Output
+    Output --> User
+```
+Fig.3: Evaluation and Monitoring design pattern
 
 ## Key Takeaways
 

@@ -1,4 +1,4 @@
-﻿# Chapter 11: Goal Setting and Monitoring
+﻿# Goal Setting and Monitoring
 
 For AI agents to be truly effective and purposeful, they need more than just the ability to process information or use tools; they need a clear sense of direction and a way to know if they're actually succeeding. This is where the Goal Setting and Monitoring pattern comes into play. It's about giving agents specific objectives to work towards and equipping them with the means to track their progress and determine if those objectives have been met.
 
@@ -212,7 +212,23 @@ current directory and all its nested sub directories, and print the total count"
 
 Along with this brief, you provide a strict quality checklist, which represents the objectives the final code must meet—criteria like "the solution must be simple," "it must be functionally correct," or "it needs to handle unexpected edge cases."
 
-
+```mermaid
+flowchart TD
+    User["👤<br/>User"]
+    Prompt["▶️<br/>Prompt"]
+    Code["&lt;/&gt;<br/>Code"]
+    Review["✓ + ☑️<br/>Self-Review + Quality Checklist"]
+    Decision{"If<br/>Good"}
+    Output["⤳<br/>Output"]
+    
+    User -->|provides| Prompt
+    Prompt --> Code
+    Code --> Review
+    Review --> Decision
+    Decision -->|True| Output
+    Decision -->|False| Code
+    Output -->|feedback| User
+```
 Fig.1: Goal Setting and Monitor example
 
 With this assignment in hand, the AI programmer gets to work and produces its first draft of the code. However, instead of immediately submitting this initial version, it pauses to perform a crucial step: a rigorous self-review. It meticulously compares its own creation against every item on the quality checklist you provided, acting as its own quality assurance inspector. After this inspection, it renders a simple, unbiased verdict on its own progress: "True" if the work meets all standards, or "False" if it falls short.
@@ -260,7 +276,20 @@ I leave to the interested reader the task of adding these more sophisticated con
 
 **Visual summary**:
 
+```mermaid
+graph TD
+    User["👤 User"]
+    Prompt["✨ Prompt"]
+    Agent["🧠 Agent"]
+    Output["↩️ Output"]
+    Goals["🎯 Goals<br/>Goal 1<br/>Goal 2<br/>Goal 3<br/>Goal 4<br/>Goal 5"]
 
+    User -->|feedback| Prompt
+    Prompt -->|input| Agent
+    Agent -->|process| Goals
+    Agent -->|generate| Output
+    Output -->|deliver| User
+```
 Fig.2: Goal design patterns
 
 ## Key takeaways 
@@ -276,7 +305,7 @@ Key takeaways include:
 
 ## Conclusion
 
-This chapter focused on the crucial paradigm of Goal Setting and Monitoring. I highlighted how this concept transforms AI agents from merely reactive systems into proactive, goal-driven entities. The text emphasized the importance of defining clear, measurable objectives and establishing rigorous monitoring procedures to track progress. Practical applications demonstrated how this paradigm supports reliable autonomous operation across various domains, including customer service and robotics. A conceptual coding example illustrates the implementation of these principles within a structured framework, using agent directives and state management to guide and evaluate an agent's achievement of its specified goals. Ultimately, equipping agents with the ability to formulate and oversee goals is a fundamental step toward building truly intelligent and accountable AI systems.
+This document focused on the crucial paradigm of Goal Setting and Monitoring. I highlighted how this concept transforms AI agents from merely reactive systems into proactive, goal-driven entities. The text emphasized the importance of defining clear, measurable objectives and establishing rigorous monitoring procedures to track progress. Practical applications demonstrated how this paradigm supports reliable autonomous operation across various domains, including customer service and robotics. A conceptual coding example illustrates the implementation of these principles within a structured framework, using agent directives and state management to guide and evaluate an agent's achievement of its specified goals. Ultimately, equipping agents with the ability to formulate and oversee goals is a fundamental step toward building truly intelligent and accountable AI systems.
 
 ## References
 

@@ -1,8 +1,8 @@
-﻿# Chapter 9: Learning and Adaptation
+﻿# Learning and Adaptation
 
-Learning and adaptation are pivotal for enhancing the capabilities of artificial intelligence agents. These processes enable agents to evolve beyond predefined parameters, allowing them to improve autonomously through experience and environmental interaction. By learning and adapting, agents can effectively manage novel situations and optimize their performance without constant manual intervention. This chapter explores the principles and mechanisms underpinning agent learning and adaptation in detail.
+Learning and adaptation are pivotal for enhancing the capabilities of artificial intelligence agents. These processes enable agents to evolve beyond predefined parameters, allowing them to improve autonomously through experience and environmental interaction. By learning and adapting, agents can effectively manage novel situations and optimize their performance without constant manual intervention. This document explores the principles and mechanisms underpinning agent learning and adaptation in detail.
 
-# The big picture
+## The big picture
 
 Agents learn and adapt by changing their thinking, actions, or knowledge based on new experiences and data. This allows agents to evolve from simply following instructions to becoming smarter over time.
 
@@ -51,7 +51,7 @@ Adaptive agents exhibit enhanced performance in variable environments through it
 * **Fraud detection agents** improve anomaly detection by refining predictive models with newly identified fraudulent patterns, enhancing system security and minimizing financial losses.
 * **Recommendation agents** improve content selection precision by employing user preference learning algorithms, providing highly individualized and contextually relevant recommendations.
 * **Game AI agents** enhance player engagement by dynamically adapting strategic algorithms, thereby increasing game complexity and challenge.
-* **Knowledge Base Learning Agents**: Agents can leverage Retrieval Augmented Generation (RAG) to maintain a dynamic knowledge base of problem descriptions and proven solutions (see the Chapter 14). By storing successful strategies and challenges encountered, the agent can reference this data during decision-making, enabling it to adapt to new situations more effectively by applying previously successful patterns or avoiding known pitfalls.
+* **Knowledge Base Learning Agents**: Agents can leverage Retrieval Augmented Generation (RAG) to maintain a dynamic knowledge base of problem descriptions and proven [solutions](14_Knowledge_Retrieval.md). By storing successful strategies and challenges encountered, the agent can reference this data during decision-making, enabling it to adapt to new situations more effectively by applying previously successful patterns or avoiding known pitfalls.
 
 ## Case Study: The Self-Improving Coding Agent (SICA)
 
@@ -59,14 +59,47 @@ The Self-Improving Coding Agent (SICA), developed by Maxime Robeyns, Laurence Ai
 
 SICA's self-improvement operates through an iterative cycle (see Fig.1). Initially, SICA reviews an archive of its past versions and their performance on benchmark tests. It selects the version with the highest performance score, calculated based on a weighted formula considering success, time, and computational cost. This selected version then undertakes the next round of self-modification. It analyzes the archive to identify potential improvements and then directly alters its codebase. The modified agent is subsequently tested against benchmarks, with the results recorded in the archive. This process repeats, facilitating learning directly from past performance. This self-improvement mechanism allows SICA to evolve its capabilities without requiring traditional training paradigms.
 
-
+```mermaid
+graph LR
+    A["🧠 Agent 0<br/>Base Code<br/>Benchmarks<br/>Bench 1<br/>Bench 2<br/>Bench 3"] -->|Meta-improvement| B["🧠 Agent 1<br/>Agent 1 Code<br/>Benchmarks<br/>Bench 1<br/>Bench 2<br/>Bench 3"]
+    B -->|Meta-improvement| C["🧠 Agent 2<br/>Agent 2 Code<br/>Benchmarks<br/>Bench 1<br/>Bench 2<br/>Bench 3"]
+    C -->|Meta-improvement| D["..."]
+    
+    BaseAgent["Base Agent"]
+    BaseAgent -->|inherits| A
+    
+    Best01["Best Agent 0,1"]
+    A -->|feedback| Best01
+    B -->|feedback| Best01
+    Best01 -->|improves| B
+    
+    Best012["Best Agent 0,...,2"]
+    Best01 -->|feedback| Best012
+    C -->|feedback| Best012
+    Best012 -->|improves| C
+    
+    style A fill:#ffffcc,stroke:#000,stroke-width:2px
+    style B fill:#ccddff,stroke:#000,stroke-width:2px
+    style C fill:#ccffcc,stroke:#000,stroke-width:2px
+    style D fill:#e0e0e0,stroke:#000,stroke-width:2px
+    style BaseAgent fill:#ffffcc,stroke:#000,stroke-width:2px
+    style Best01 fill:#ccddff,stroke:#000,stroke-width:2px
+    style Best012 fill:#ccffcc,stroke:#000,stroke-width:2px
+```
 Fig.1: SICA's self-improvement, learning and adapting based on its past versions
 
 SICA underwent significant self-improvement, leading to advancements in code editing and navigation. Initially, SICA utilized a basic file-overwriting approach for code changes. It subsequently developed a "Smart Editor" capable of more intelligent and contextual edits. This evolved into a "Diff-Enhanced Smart Editor," incorporating diffs for targeted modifications and pattern-based editing, and a "Quick Overwrite Tool" to reduce processing demands.
 
 SICA further implemented "Minimal Diff Output Optimization" and "Context-Sensitive Diff Minimization," using Abstract Syntax Tree (AST) parsing for eficiency. Additionally, a "SmartEditor Input Normalizer" was added. In terms of navigation, SICA independently created an "AST Symbol Locator," using the code's structural map (AST) to identify definitions within the codebase. Later, a "Hybrid Symbol Locator" was developed, combining a quick search with AST checking. This was further optimized via "Optimized AST Parsing in Hybrid Symbol Locator" to focus on relevant code sections, improving search speed.(see Fig. 2)
 
-
+```mermaid
+xychart-beta
+  title Performance across iterations
+    x-axis [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+    y-axis "Utility" 0.53 --> 0.70
+    line [0.56, 0.58, 0.60, 0.59, 0.60, 0.59, 0.60, 0.63, 0.62, 0.65, 0.63, 0.64, 0.57, 0.68, 0.67]
+    line [0.57, 0.58, 0.60, 0.60, 0.60, 0.60, 0.60, 0.63, 0.63, 0.65, 0.65, 0.65, 0.65, 0.68, 0.68]
+```
 Fig.2 : Performance across iterations. Key improvements are annotated with their corresponding tool or agent modifications. (courtesy of Maxime Robeyns , Martin Szummer , Laurence Aitchison)
 
 SICA's architecture comprises a foundational toolkit for basic file operations, command execution, and arithmetic calculations. It includes mechanisms for result submission and the invocation of specialized sub-agents (coding, problem-solving, and reasoning). These sub-agents decompose complex tasks and manage the LLM's context length, especially during extended improvement cycles.
@@ -99,7 +132,33 @@ In the realm of fundamental research, AlphaEvolve has contributed to the discove
 
 **OpenEvolve** is an evolutionary coding agent that leverages LLMs (see Fig.3) to iteratively optimize code. It orchestrates a pipeline of LLM-driven code generation, evaluation, and selection to continuously enhance programs for a wide range of tasks. A key aspect of OpenEvolve is its capability to evolve entire code files, rather than being limited to single functions. The agent is designed for versatility, offering support for multiple programming languages and compatibility with OpenAI-compatible APIs for any LLM. Furthermore, it incorporates multi-objective optimization, allows for flexible prompt engineering, and is capable of distributed evaluation to eficiently handle complex coding challenges.
 
+```mermaid
+graph TD
+    subgraph " "
+        direction TB
+        PD["<b>Program Database</b><br/>Stores programs and<br/>metrics"]
+        LLM["<b>LLM Ensemble</b><br/>Generates code<br/>modifications"]
+        CO["<b>Controller<br/>Orchestration</b>"]
+        PS["<b>Prompt Sampler</b><br/>Creates context-rich<br/>prompts"]
+        EP["<b>Evaluator Pool</b><br/>Tests programs and<br/>assigns scores"]
+    end
 
+    PD -- "Programs" --> CO
+    CO -- "Updates" --> PD
+    CO -- "Requests" --> LLM
+    LLM -- "Code" --> CO
+    PD -- "Past<br/>Programs" --> PS
+    CO -- "Prompt" --> PS
+    PS -- "Request" --> CO
+    CO -- "Programs" --> EP
+    EP -- "Metrics" --> CO
+
+    style PD fill:#ffffcc,stroke:#ccc,stroke-width:2px,color:#000
+    style LLM fill:#cce5ff,stroke:#ccc,stroke-width:2px,color:#000
+    style CO fill:#ffcccc,stroke:#ccc,stroke-width:2px,color:#000
+    style PS fill:#d4e157,stroke:#ccc,stroke-width:2px,color:#000
+    style EP fill:#d1c4e9,stroke:#ccc,stroke-width:2px,color:#000
+```
 Fig. 3: The OpenEvolve internal architecture is managed by a controller. This controller orchestrates several key components: the program sampler, Program Database, Evaluator Pool, and LLM Ensembles. Its primary function is to facilitate their learning and adaptation processes to enhance code quality.
 
 This code snippet uses the OpenEvolve library to perform evolutionary optimization on a program. It initializes the OpenEvolve system with paths to an initial program, an evaluation file, and a configuration file. The evolve.run(iterations=1000) line starts the evolutionary process, running for 1000 iterations to find an improved version of the program. Finally, it prints the metrics of the best program found during the evolution, formatted to four decimal places.
@@ -126,7 +185,21 @@ for name, value in best_program.metrics.items(): print(f" {name}: {value:.4f}")
 
 **Visual summary**
 
-
+```mermaid
+graph TD
+    User["👤 User"]
+    Prompt["📝 Prompt"]
+    Agent["🧠 Agent"]
+    Learning["💡 Learning<br/>Learning 1<br/>Learning 2<br/>Learning 3<br/>Learning 4<br/>Learning n"]
+    Output["📤 Output"]
+    
+    User -->|feedback| Prompt
+    Prompt -->|input| Agent
+    Agent -->|process| Learning
+    Learning -->|insights| Agent
+    Agent -->|generate| Output
+    Output -->|result| User
+```
 Fig.4: Learning and adapting pattern
 
 ## Key Takeaways
@@ -143,7 +216,7 @@ Fig.4: Learning and adapting pattern
 
 ## Conclusion
 
-This chapter examines the crucial roles of learning and adaptation in Artificial Intelligence. AI agents enhance their performance through continuous data acquisition and experience. The Self-Improving Coding Agent (SICA) exemplifies this by autonomously improving its capabilities through code modifications.
+This document examines the crucial roles of learning and adaptation in Artificial Intelligence. AI agents enhance their performance through continuous data acquisition and experience. The Self-Improving Coding Agent (SICA) exemplifies this by autonomously improving its capabilities through code modifications.
 
 We have reviewed the fundamental components of agentic AI, including architecture, applications, planning, multi-agent collaboration, memory management, and learning and adaptation. Learning principles are particularly vital for coordinated improvement in multi-agent systems. To achieve this, tuning data must accurately reflect the complete interaction trajectory, capturing the individual inputs and outputs of each participating agent.
 

@@ -1,4 +1,4 @@
-﻿# Chapter 6: Planning
+﻿# Planning
 
 Intelligent behavior often involves more than just reacting to the immediate input. It requires foresight, breaking down complex tasks into smaller, manageable steps, and strategizing how to achieve a desired outcome. This is where the Planning pattern comes into play. At its core, planning is the ability for an agent or a system of agents to formulate a sequence of actions to move from an initial state towards a goal state.
 
@@ -66,7 +66,6 @@ agents=[planner_writer_agent], tasks=[high_level_task], process=Process.sequenti
 print("## Running the planning and writing task ##") result = crew.kickoff()
 
 print("\n\n---\n## Task Result ##\n---") print(result)
-
 ```
 
 This code uses the CrewAI library to create an AI agent that plans and writes a summary on a given topic. It starts by importing necessary libraries, including Crew.ai and langchain_openai, and loading environment variables from a .env file. A ChatOpenAI language model is explicitly defined for use with the agent. An Agent named planner_writer_agent is created with a specific role and goal: to plan and then write a concise summary. The agent's backstory emphasizes its expertise in planning and technical writing. A Task is defined with a clear description to first create a plan and then write a summary on the topic "The importance of Reinforcement Learning in AI", with a specific format for the expected output. A Crew is assembled with the agent and task, set to process them sequentially. Finally, the crew.kickoff() method is called to execute the defined task and the result is printed.
@@ -77,19 +76,90 @@ Google Gemini DeepResearch (see Fig.1)  is an agent-based system designed for au
 
 Expanding on this, the system's operation is not a single query-response event but a managed, long-running process. It begins by deconstructing a user's prompt into a multi-point research plan (see Fig. 1), which is then presented to the user for review and modification. This allows for a collaborative shaping of the research trajectory before execution. Once the plan is approved, the agentic pipeline initiates its iterative search-and-analysis loop. This involves more than just executing a series of predefined searches; the agent dynamically formulates and refines its queries based on the information it gathers, actively identifying knowledge gaps, corroborating data points, and resolving discrepancies.
 
+```mermaid
+graph TD
+    A["Europe VC Investment Analysis"]
+    B["Research Websites"]
+    C["(1) Search for total volume of VC investment in Europe 2025 & 2024"]
+    D["(2) Find reports on top European countries by VC investment volume"]
+    E["(3) Look for YoY growth rate data of VC investment in European countries"]
+    F["(4) Identify countries with largest percentage increase in VC investment"]
+    G["(5) Search for analyses highlighting European countries with accelerating VC investment"]
+    H["(6) Investigate sectors driving VC investment acceleration"]
+    I["Analyze Results"]
+    J["Create Report"]
+    K["Ready in a few mins"]
 
+    A --> B
+    B --> C
+    B --> D
+    B --> E
+    B --> F
+    B --> G
+    B --> H
+    C --> I
+    D --> I
+    E --> I
+    F --> I
+    G --> I
+    H --> I
+    I --> J
+    J --> K
+```
 Fig. 1: Google Deep Research agent generating an execution plan for using Google Search as a tool.
 
 A key architectural component is the system's ability to manage this process asynchronously. This design ensures that the investigation, which can involve analyzing hundreds of sources, is resilient to single-point failures and allows the user to disengage and be notified upon completion. The system can also integrate user-provided documents, combining information from private sources with its web-based research. The final output is not merely a concatenated list of findings but a structured, multi-page report. During the synthesis phase, the model performs a critical evaluation of the collected information, identifying major themes and organizing the content into a coherent narrative with logical sections. The report is designed to be interactive, often including features like an audio overview, charts, and links to the original cited sources, allowing for verification and further exploration by the user. In addition to the synthesized results, the model explicitly returns the full list of sources it searched and consulted (see Fig.2). These are presented as citations, providing complete transparency and direct access to the primary information. This entire process transforms a simple query into a comprehensive, synthesized body of knowledge.
 
-
+```mermaid
+graph TD
+    A["Europe VC Investment Analysis"] --> B["Initial Investment Landscape"]
+    B --> B1["Understanding overall investment amounts<br/>for current and previous year"]
+    
+    A --> C["Identifying Key Players"]
+    C --> C1["Pinpoint European countries<br/>leading in VC volume attraction"]
+    
+    A --> D["Focusing on Growth"]
+    D --> D1["Compare growth rates of VC investments<br/>across European nations year-over-year"]
+    
+    A --> E["Next Steps: Deeper Dive"]
+    E --> E1["Search for reports on countries with<br/>largest percentage increases in VC investment"]
+    E --> E2["Find analyses on 'accelerating' VC<br/>investment within European countries"]
+    
+    A --> F["Research Websites & Resources"]
+    F --> F1["dealroom.co<br/>news.crunchbase.com<br/>startupavant.com<br/>seedblink.com"]
+    F --> F2["portugalbusinessnews.com<br/>stateofeuropeantech.com<br/>pitchbook.com<br/>femaleswitch.com"]
+    F --> F3["affinity.co<br/>innovatefinance.com<br/>investeurope.eu<br/>stateofeuropeantech.com"]
+    F --> F4["svb.com<br/>cbinsights.com<br/>bebeez.eu<br/>hackernoon.com"]
+    F --> F5["therecursive.com<br/>euractiv.com<br/>kpmg.com<br/>leadloft.com"]
+    F --> F6["bain.com<br/>visible.vc<br/>reddit.com<br/>bvkap.de"]
+```
 Fig. 2: An example of Deep Research plan being executed, resulting in Google Search being used as a tool to search various web sources.
 
 By mitigating the substantial time and resource investment required for manual data acquisition and synthesis, Gemini DeepResearch provides a more structured and exhaustive method for information discovery. The system's value is particularly evident in complex, multi-faceted research tasks across various domains.
 
 For instance, in competitive analysis, the agent can be directed to systematically gather and collate data on market trends, competitor product specifications, public sentiment from diverse online sources, and marketing strategies. This automated process replaces the laborious task of manually tracking multiple competitors, allowing analysts to focus on higher-order strategic interpretation rather than data collection (see Fig. 3).
 
+```markdown
+# European Venture Capital Investment Landscape: Trends and Accelerating Countries
 
+## Executive Summary
+
+This report provides a comprehensive analysis of the venture capital (VC) investment landscape in Europe, focusing on the trends observed in 2024 and the first quarter of 2025. The analysis identifies the total VC investment volume in Europe during these periods, highlights the top-performing countries, and pinpoints those experiencing an acceleration in investment activity. Furthermore, the report examines the key sectors that are attracting the most significant capital, offering insights into the evolving dynamics of the European venture ecosystem.
+
+Findings indicate a stabilization of the market in early 2025 after a mixed performance in 2024, with specific countries like Spain, the UK & Ireland, and the Netherlands demonstrating notable growth. The leading sectors driving investment include Artificial Intelligence and Machine Learning, Healthcare and Biotech, Fintech, Cleantech and Energy, and Deep Tech and Defense Tech.
+
+## State of European VC Investment in 2024
+
+### Total VC Investment Volume in Europe in 2024
+
+The total volume of venture capital investment in Europe during 2024 presents a varied picture depending on the data source. Crunchbase data indicates a total of $51 billion invested, representing a 5% decrease compared to the $54 billion recorded in 2023. In contrast, Invest Europe reported a strong rebound with €18 billion (approximately $19.4 billion) invested, marking a substantial 26% increase year-over-year. This figure positions 2024 as the second-highest year for VC investment in Europe, surpassed only by the record levels of 2022. GoingVC data, however, suggests a more significant downturn, reporting $10 billion in VC funding for Europe in 2024, a 39% decline from the previous year. PitchBook data estimates the total deal value at €57.3 billion (approximately $61.8 billion), indicating a 6.7% drop from the €55.1 billion invested in 2023.
+
+The discrepancies in these figures highlight the challenges inherent in tracking venture capital investment and likely stem from differences in methodologies, including the scope of what is considered VC investment, deal size thresholds, and the inclusion or exclusion of specific funding types or regions. The timing of data collection and reporting can also contribute to these variations. Despite these conflicting numbers, a broader trend emerges when comparing 2024 to previous years. While Crunchbase and PitchBook suggest a decrease or stabilization compared to 2023, Invest Europe points to a strong recovery. However, all sources generally agree that the investment volume in 2024 remained significantly below the peak observed in 2021. This indicates a market recalibration following a period of extraordinary growth. Dealroom data further supports this, showing a 37% drop in European VC investment in 2023 compared to 2022, suggesting that 2024, according to some reports, might be showing signs of a positive shift after a period of decline.
+
+### Top European Countries by VC Investment Volume in 2024
+
+The United Kingdom consistently emerged as the leading country in Europe for venture capital investment in 2024. Crunchbase data reported
+```
 Fig. 3: Final output generated by the Google Deep Research agent, analyzing on our behalf sources obtained using Google Search as a tool.
 
 Similarly, in academic exploration, the system serves as a powerful tool for conducting extensive literature reviews. It can identify and summarize foundational papers, trace the development of concepts across numerous publications, and map out emerging research fronts within a specific field, thereby accelerating the initial and most time-consuming phase of academic inquiry.
@@ -106,7 +176,7 @@ The Deep Research API is useful because it automates what would otherwise be hou
 * **Transparency**: Unlike the abstracted process in ChatGPT, the API exposes all intermediate steps, including the agent's reasoning, the specific web search queries it executed, and any code it ran. This allows for detailed debugging, analysis, and a deeper understanding of how the final answer was constructed.
 * **Extensibility**: It supports the Model Context Protocol (MCP), enabling developers to connect the agent to private knowledge bases and internal data sources, blending public web research with proprietary information.
 
-To use the API, you send a request to the client.responses.create endpoint, specifying a model, an input prompt, and the tools the agent can use. The input typically includes a system_message that defines the agent's persona and desired output format, along with the user_query. You must also include the web_search_preview tool and can optionally add others like code_interpreter or custom MCP tools (see Chapter 10) for internal data.
+To use the API, you send a request to the client.responses.create endpoint, specifying a model, an input prompt, and the tools the agent can use. The input typically includes a system_message that defines the agent's persona and desired output format, along with the user_query. You must also include the web_search_preview tool and can optionally add others like code_interpreter or custom [MCP tools](10_Model_Context_Protocol.md) for internal data.
 
 ```python
 from openai import OpenAI
@@ -192,7 +262,21 @@ Subsequently, it attempts to access and display inline citations and metadata fr
 
 **Visual summary**
 
-
+```mermaid
+graph TD
+    User["👤 User"]
+    Prompt["✨ Prompt"]
+    Agent["🧠 Agent"]
+    Output["↩️ Output"]
+    Plans["📊 Plans<br/>Plan 1<br/>Plan 2<br/>Plan 3<br/>Plan ..."]
+    
+    User -->|input| Prompt
+    Prompt -->|send| Agent
+    Agent -->|plan| Plans
+    Plans -->|steps| Agent
+    Agent -->|generate| Output
+    Output -->|response| User
+```
 Fig.4; Planning design pattern
 
 ## Key Takeaways

@@ -1,8 +1,8 @@
-﻿# Chapter 4: Reflection
+﻿# Reflection
 
 ## Reflection Pattern Overview
 
-In the preceding chapters, we've explored fundamental agentic patterns: Chaining for sequential execution, Routing for dynamic path selection, and Parallelization for concurrent task execution. These patterns enable agents to perform complex tasks more eficiently and flexibly. However, even with sophisticated workflows, an agent's initial output or plan might not be optimal, accurate, or complete. This is where the **Reflection** pattern comes into play.
+We've explored fundamental agentic patterns: [Chaining](01_Prompt_Chaining.md) for sequential execution, [Routing](02_Routing.md) for dynamic path selection, and [Parallelization](03_Parallelization.md) for concurrent task execution. These patterns enable agents to perform complex tasks more eficiently and flexibly. However, even with sophisticated workflows, an agent's initial output or plan might not be optimal, accurate, or complete. This is where the **Reflection** pattern comes into play.
 
 The Reflection pattern involves an agent evaluating its own work, output, or internal state and using that evaluation to improve its performance or refine its response. It's a form of self-correction or self-improvement, allowing the agent to iteratively refine its output or adjust its approach based on feedback, internal critique, or comparison against desired criteria. Reflection can occasionally be facilitated by a separate agent whose specific role is to analyze the output of an initial agent.
 
@@ -27,9 +27,9 @@ Implementing reflection often requires structuring the agent's workflow to inclu
 
 The Reflection pattern is crucial for building agents that can produce high-quality outputs, handle nuanced tasks, and exhibit a degree of self-awareness and adaptability. It moves agents beyond simply executing instructions towards a more sophisticated form of problem-solving and content generation.
 
-The intersection of reflection with goal setting and monitoring (see Chapter 11) is worth noticing. A goal provides the ultimate benchmark for the agent's self-evaluation, while monitoring tracks its progress. In a number of practical cases, Reflection then might act as the corrective engine, using monitored feedback to analyze deviations and adjust its strategy. This synergy transforms the agent from a passive executor into a purposeful system that adaptively works to achieve its objectives.
+The intersection of reflection with [goal setting and monitoring](11_Goal_Setting_and_Monitoring.md) is worth noticing. A goal provides the ultimate benchmark for the agent's self-evaluation, while monitoring tracks its progress. In a number of practical cases, Reflection then might act as the corrective engine, using monitored feedback to analyze deviations and adjust its strategy. This synergy transforms the agent from a passive executor into a purposeful system that adaptively works to achieve its objectives.
 
-Furthermore, the effectiveness of the Reflection pattern is significantly enhanced when the LLM keeps a memory of the conversation (see Chapter 8). This conversational history provides crucial context for the evaluation phase, allowing the agent to assess its output not just in isolation, but against the backdrop of previous interactions, user feedback, and evolving goals. It enables the agent to learn from past critiques and avoid repeating errors. Without memory, each reflection is a self-contained event; with memory, reflection becomes a cumulative process where each cycle builds upon the last, leading to more intelligent and context-aware refinement.
+Furthermore, the effectiveness of the Reflection pattern is significantly enhanced when the LLM keeps a [memory of the conversation](08_Memory_Management.md). This conversational history provides crucial context for the evaluation phase, allowing the agent to assess its output not just in isolation, but against the backdrop of previous interactions, user feedback, and evolving goals. It enables the agent to learn from past critiques and avoid repeating errors. Without memory, each reflection is a self-contained event; with memory, reflection becomes a cumulative process where each cycle builds upon the last, leading to more intelligent and context-aware refinement.
 
 ## Practical Applications & Use Cases
 
@@ -213,11 +213,39 @@ Before concluding, it's important to consider that while the Reflection pattern 
 
 **Visual summary**
 
-
+```mermaid
+graph TD
+    User["👤 User"]
+    Prompt["✨ Prompt"]
+    Agent["🧠 Agent"]
+    Reflection["Reflection"]
+    Output["Output"]
+    
+    User -->|sends| Prompt
+    Prompt -->|processes| Agent
+    Agent -->|generates| Output
+    Agent -->|refines| Reflection
+    Reflection -->|feedback| Agent
+    Output -->|returns to| User
+```
 Fig. 1: Reflection design pattern, self-reflection
 
-
-Fig.2: Reflection design pattern, producer and critique agent
+```mermaid
+graph TD
+    User["👤 User"]
+    Prompt["✨ Prompt"]
+    Agent["🧠 Agent: Producer"]
+    Critique["🧠 Agent: Critique"]
+    Output["Output"]
+    
+    User -->|sends| Prompt
+    Prompt -->|processes| Agent
+    Agent -->|generates| Output
+    Agent -->|refines| Critique
+    Critique -->|feedback| Agent
+    Output -->|returns to| User
+```
+Fig. 2: Reflection design pattern, producer and critique agent
 
 ## Key Takeaways
 

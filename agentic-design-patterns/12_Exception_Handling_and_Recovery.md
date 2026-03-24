@@ -1,4 +1,4 @@
-﻿# Chapter 12: Exception Handling and Recovery
+﻿# Exception Handling and Recovery
 
 For AI agents to operate reliably in diverse real-world environments, they must be able to manage unforeseen situations, errors, and malfunctions. Just as humans adapt to unexpected obstacles, intelligent agents need robust systems to detect problems, initiate recovery procedures, or at least ensure controlled failure. This essential requirement forms the basis of the Exception Handling and Recovery pattern.
 
@@ -12,7 +12,17 @@ This pattern may sometimes be used with reflection. For example, if an initial a
 
 The Exception Handling and Recovery pattern addresses the need for AI agents to manage operational failures. This pattern involves anticipating potential issues, such as tool errors or service unavailability, and developing strategies to mitigate them. These strategies may include error logging, retries, fallbacks, graceful degradation, and notifications. Additionally, the pattern emphasizes recovery mechanisms like state rollback, diagnosis, self-correction, and escalation, to restore agents to stable operation. Implementing this pattern enhances the reliability and robustness of AI agents, allowing them to function in unpredictable environments. Examples of practical applications include chatbots managing database errors, trading bots handling financial errors, and smart home agents addressing device malfunctions. The pattern ensures that agents can continue to operate effectively despite encountering complexities and failures.
 
-
+```mermaid
+flowchart LR
+    A["🔍<br/>Error Detection"]
+    A --> B["⚠️<br/>Error Handling"]
+    B --> C["🛡️<br/>Recovery"]
+    C --> A
+    
+    style A fill:#f9f9f9,stroke:#000,stroke-width:2px
+    style B fill:#f9f9f9,stroke:#000,stroke-width:2px
+    style C fill:#f9f9f9,stroke:#000,stroke-width:2px
+```
 Fig.1: Key components of exception handling and recovery for AI agents
 
 **Error Detection**: This involves meticulously identifying operational issues as they arise. This could manifest as invalid or malformed tool outputs, specific API errors such as 404 (Not Found) or 500 (Internal Server Error) codes, unusually long response times from services or APIs, or incoherent and nonsensical responses that deviate from expected formats. Additionally, monitoring by other agents or specialized monitoring systems might be implemented for more proactive anomaly detection, enabling the system to catch potential issues before they escalate.
@@ -82,7 +92,19 @@ This code defines a robust location retrieval system using a ADK's SequentialAge
 
 **Visual summary**
 
-
+```mermaid
+graph TD
+    User["👤 User"]
+    Prompt["📝 Prompt"]
+    Agent["🧠 Agent"]
+    Exception["⚠️ Exception<br/>Handling"]
+    
+    User -->|input| Prompt
+    Prompt -->|send| Agent
+    Agent -->|process| Exception
+    Exception -->|feedback| Agent
+    Agent -->|↩️ Output| User
+```
 Fig.2: Exception handling pattern
 
 ## Key Takeaways 
@@ -98,7 +120,7 @@ Essential points to remember:
 
 ## Conclusion
 
-This chapter explores the Exception Handling and Recovery pattern, which is essential for developing robust and dependable AI agents. This pattern addresses how AI agents can identify and manage unexpected issues, implement appropriate responses, and recover to a stable operational state. The chapter discusses various aspects of this pattern, including the detection of errors, the handling of these errors through mechanisms such as logging, retries, and fallbacks, and the strategies used to restore the agent or system to proper function. Practical applications of the Exception Handling and Recovery pattern are illustrated across several domains to demonstrate its relevance in handling real-world complexities and potential failures. These applications show how equipping AI agents with exception handling capabilities contributes to their reliability and adaptability in dynamic environments.
+This document explores the Exception Handling and Recovery pattern, which is essential for developing robust and dependable AI agents. This pattern addresses how AI agents can identify and manage unexpected issues, implement appropriate responses, and recover to a stable operational state. The document discusses various aspects of this pattern, including the detection of errors, the handling of these errors through mechanisms such as logging, retries, and fallbacks, and the strategies used to restore the agent or system to proper function. Practical applications of the Exception Handling and Recovery pattern are illustrated across several domains to demonstrate its relevance in handling real-world complexities and potential failures. These applications show how equipping AI agents with exception handling capabilities contributes to their reliability and adaptability in dynamic environments.
 
 ## References
 

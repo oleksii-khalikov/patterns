@@ -1,6 +1,6 @@
-﻿# Chapter 8: Memory Management
+﻿# Memory Management
 
-Effective memory management is crucial for intelligent agents to retain information. Agents require different types of memory, much like humans, to operate eficiently. This chapter delves into memory management, specifically addressing the immediate (short-term) and persistent (long-term) memory requirements of agents.
+Effective memory management is crucial for intelligent agents to retain information. Agents require different types of memory, much like humans, to operate eficiently. This document delves into memory management, specifically addressing the immediate (short-term) and persistent (long-term) memory requirements of agents.
 
 In agent systems, memory refers to an agent's ability to retain and utilize information from past interactions, observations, and learning experiences. This capability allows agents to make informed decisions, maintain conversational context, and improve over time. Agent memory is generally categorized into two main types:
 
@@ -219,7 +219,7 @@ memory_service = InMemoryMemoryService()
 
 Session and State can be conceptualized as short-term memory for a single chat session, whereas the Long-Term Knowledge managed by the MemoryService functions as a persistent and searchable repository. This repository may contain information from multiple past interactions or external sources. The MemoryService, as defined by the BaseMemoryService interface, establishes a standard for managing this searchable, long-term knowledge. Its primary functions include adding information, which involves extracting content from a session and storing it using the add_session_to_memory method, and retrieving information, which allows an agent to query the store and receive relevant data using the search_memory method.
 
-The ADK offers several implementations for creating this long-term knowledge store. The InMemoryMemoryService provides a temporary storage solution suitable for testing purposes, but data is not preserved across application restarts. For production environments, the VertexAiRagMemoryService is typically utilized. This service leverages Google Cloud's Retrieval Augmented Generation (RAG) service, enabling scalable, persistent, and semantic search capabilities (Also, refer to the chapter 14 on RAG).
+The ADK offers several implementations for creating this long-term knowledge store. The InMemoryMemoryService provides a temporary storage solution suitable for testing purposes, but data is not preserved across application restarts. For production environments, the VertexAiRagMemoryService is typically utilized. This service leverages Google Cloud's Retrieval Augmented Generation (RAG) service, enabling scalable, persistent, and semantic search capabilities (Also, refer to the [RAG](14_Knowledge_Retrieval.md)).
 
 ```python
 # Example: Using VertexAiRagMemoryService
@@ -443,7 +443,21 @@ Memory Bank offers seamless integration with the Google ADK, providing an immedi
 
 **Visual summary**
 
+```mermaid
+graph TD
+  User["User"]
+  Prompt["Prompt"]
+  Agent["Agent"]
+  Memory["Memory"]
+  Output["Output"]
 
+  User -->|provide| Prompt
+  Prompt -->|send| Agent
+  Agent -->|store| Memory
+  Memory -->|retrieve| Agent
+  Agent -->|generate| Output
+  Output -->|return| User
+```
 Fig.1: Memory management design pattern
 
 ## Key Takeaways
@@ -465,7 +479,7 @@ To quickly recap the main points about memory management:
 
 ## Conclusion
 
-This chapter dove into the really important job of memory management for agent systems, showing the difference between the short-lived context and the knowledge that sticks around for a long time. We talked about how these types of memory are set up and where you see them used in building smarter agents that can remember things. We took a detailed look at how Google ADK gives you specific pieces like Session, State, and MemoryService to handle this. Now that we've covered how agents can remember things, both short-term and long-term, we can move on to how they can learn and adapt. The next pattern "Learning and Adaptation" is about an agent changing how it thinks, acts, or what it knows, all based on new experiences or data.
+This document dove into the really important job of memory management for agent systems, showing the difference between the short-lived context and the knowledge that sticks around for a long time. We talked about how these types of memory are set up and where you see them used in building smarter agents that can remember things. We took a detailed look at how Google ADK gives you specific pieces like Session, State, and MemoryService to handle this. Now that we've covered how agents can remember things, both short-term and long-term, we can move on to how they can learn and adapt. The next pattern "Learning and Adaptation" is about an agent changing how it thinks, acts, or what it knows, all based on new experiences or data.
 
 ## References
 

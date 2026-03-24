@@ -1,4 +1,4 @@
-﻿# Chapter 16: Resource-Aware Optimization
+﻿# Resource-Aware Optimization
 
 Resource-Aware Optimization enables intelligent agents to dynamically monitor and manage computational, temporal, and financial resources during operation. This differs from simple planning, which primarily focuses on action sequencing. Resource-Aware Optimization requires agents to make decisions regarding action execution to achieve goals within specified resource budgets or to optimize eficiency. This involves choosing between more accurate but expensive models and faster, lower-cost ones, or deciding whether to allocate additional compute for a more refined response versus returning a quicker, less detailed answer.
 
@@ -23,7 +23,7 @@ For example, consider a travel planner built with a hierarchical agent. The high
 
 However, once the plan is established, the individual tasks within that plan, such as looking up flight prices, checking hotel availability, or finding restaurant reviews, are essentially simple, repetitive web queries. These "tool function calls" can be executed by a faster and more affordable model like Gemini Flash. It is easier to visualize why the affordable model can be used for these straightforward web searches, while the intricate planning phase requires the greater intelligence of the more advanced model to ensure a coherent and logical travel plan.
 
-Google's ADK supports this approach through its multi-agent architecture, which allows for modular and scalable applications. Different agents can handle specialized tasks. Model flexibility enables the direct use of various Gemini models, including both Gemini Pro and Gemini Flash, or integration of other models through LiteLLM. The ADK's orchestration capabilities support dynamic, LLM-driven routing for adaptive behavior. Built-in evaluation features allow systematic assessment of agent performance, which can be used for system refinement (see the Chapter on Evaluation and Monitoring).
+Google's ADK supports this approach through its multi-agent architecture, which allows for modular and scalable applications. Different agents can handle specialized tasks. Model flexibility enables the direct use of various Gemini models, including both Gemini Pro and Gemini Flash, or integration of other models through LiteLLM. The ADK's orchestration capabilities support dynamic, LLM-driven routing for adaptive behavior. Built-in [evaluation features](19_Evaluation_and_Monitoring.md) allow systematic assessment of agent performance, which can be used for system refinement.
 
 Next, two agents with identical setup but utilizing different models and costs will be defined.
 
@@ -249,10 +249,7 @@ This code snippet uses the requests library to interact with the OpenRouter API.
 }
 ```
 
-OpenRouter offers a detailed leaderboard ( https://openrouter.ai/rankings) which ranks available AI models based on their cumulative token production. It also offers latest models from different providers (ChatGPT, Gemini, Claude) (see Fig. 1)
-
-
-Fig. 1: OpenRouter Web site (https://openrouter.ai/)
+OpenRouter offers a detailed leaderboard ( https://openrouter.ai/rankings) which ranks available AI models based on their cumulative token production. It also offers latest models from different providers (ChatGPT, Gemini, Claude).
 
 ## Beyond Dynamic Model Switching: A Spectrum of Agent Resource Optimizations
 
@@ -286,8 +283,22 @@ Resource-aware optimization is paramount in developing intelligent agent systems
 
 **Visual Summary**
 
+```mermaid
+graph TD
+    User["👤 User"]
+    Prompt["📝 Prompt"]
+    Agent["🧠 Agent"]
+    Budget["💰 Budget"]
+    Output["↩️ Output"]
 
-Fig. 2: Resource-Aware Optimization Design Pattern
+    User -->|refine| Prompt
+    Prompt -->|send| Agent
+    Agent -->|check| Budget
+    Budget -->|constraint| Agent
+    Agent -->|process| Output
+    Output -->|return| User
+```
+Fig. 1: Resource-Aware Optimization Design Pattern
 
 ## Key Takeaways
 

@@ -1,4 +1,4 @@
-﻿# Chapter 20: Prioritization
+﻿# Prioritization
 
 In complex, dynamic environments, Agents frequently encounter numerous potential actions, conflicting goals, and limited resources. Without a defined process for determining the subsequent action, the agents may experience reduced eficiency, operational delays, or failures to achieve key objectives. The prioritization pattern addresses this issue by enabling agents to assess and rank tasks, objectives, or actions based on their significance, urgency, dependencies, and established criteria. This ensures the agents concentrate efforts on the most critical tasks, resulting in enhanced effectiveness and goal alignment.
 
@@ -197,7 +197,18 @@ The code incorporates a simulation function (run_simulation) of asynchronous nat
 
 **Visual summary**:
 
-
+```mermaid
+graph TD
+    User["👤 User"]
+    Prompt["✨ Prompt"]
+    Agent["🧠 Agent"]
+    Priorities["📝 <br/>Priority 1<br/>Priority 2<br/>Priority n"]
+    
+    User -->|input| Prompt
+    Prompt -->|send| Agent
+    Agent <--> Priorities
+    Agent -->|↩️ Output| User
+```
 Fig.1: Prioritization Design pattern
 
 ## Key Takeaways

@@ -1,4 +1,4 @@
-﻿# Appendix B - AI Agentic Interactions: From GUI to Real World environment
+﻿# Appendix B: AI Agentic Interactions: From GUI to Real World environment
 
 AI agents are increasingly performing complex tasks by interacting with digital interfaces and the physical world. Their ability to perceive, process, and act within these varied environments is fundamentally transforming automation, human-computer interaction, and intelligent systems. This appendix explores how agents interact with computers and their environments, highlighting advancements and projects.
 
@@ -17,6 +17,10 @@ This technology is no longer theoretical. Several leading AI labs have developed
 
 **Google Project Mariner**: As a research prototype, Project Mariner operates as an agent within the Chrome browser (see Fig. 1). Its purpose is to understand a user's intent and autonomously carry out web-based tasks on their behalf. For example, a user could ask it to find three apartments for rent within a specific budget and neighborhood; Mariner would then navigate to real estate websites, apply the filters, browse the listings, and extract the relevant information into a document. This project represents Google's exploration into creating a truly helpful and "agentive" web experience where the browser actively works for the user.
 
+```mermaid
+graph LR
+    A["🌐 Web Browser"] <-->|requests/responses| B["🤖 Agent"]
+```
 Fig.1: Interaction between and Agent and the Web Browser
 
 **Anthropic's Computer Use**: This feature empowers Anthropic's AI model, Claude, to become a direct user of a computer's desktop environment. By capturing screenshots to perceive the screen and programmatically controlling the mouse and keyboard, Claude can orchestrate workflows that span multiple, unconnected applications. A user could ask it to analyze data in a PDF report, open a spreadsheet application to perform calculations on that data, generate a chart, and then paste that chart into an email draft—a sequence of tasks that previously required constant human input.

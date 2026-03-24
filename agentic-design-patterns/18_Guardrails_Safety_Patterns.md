@@ -1,10 +1,10 @@
-﻿# Chapter 18: Guardrails/Safety Patterns
+﻿# Guardrails/Safety Patterns
 
 Guardrails, also referred to as safety patterns, are crucial mechanisms that ensure intelligent agents operate safely, ethically, and as intended, particularly as these agents become more autonomous and integrated into critical systems. They serve as a protective layer, guiding the agent's behavior and output to prevent harmful, biased, irrelevant, or otherwise undesirable responses. These guardrails can be implemented at various stages, including Input Validation/Sanitization to filter malicious content, Output Filtering/Post-processing to analyze generated responses for toxicity or bias, Behavioral Constraints (Prompt-level) through direct instructions, Tool Use Restrictions to limit agent capabilities, External Moderation APIs for content moderation, and Human Oversight/Intervention via "Human-in-the-Loop" mechanisms.
 
 The primary aim of guardrails is not to restrict an agent's capabilities but to ensure its operation is robust, trustworthy, and beneficial. They function as a safety measure and a guiding influence, vital for constructing responsible AI systems, mitigating risks, and maintaining user trust by ensuring predictable, safe, and compliant behavior, thus preventing manipulation and upholding ethical and legal standards. Without them, an AI system may be unconstrained, unpredictable, and potentially hazardous. To further mitigate these risks, a less computationally intensive model can be employed as a rapid, additional safeguard to pre-screen inputs or double-check the outputs of the primary model for policy violations.
 
-# Practical Applications & Use Cases 
+## Practical Applications & Use Cases 
 
 Guardrails are applied across a range of agentic applications:
 
@@ -274,7 +274,7 @@ A helper function, run_guardrail_crew, encapsulates the execution logic. It take
 
 Finally, the script includes a main execution block (if __name__ == "__main__":) that provides a demonstration. It defines a list of test_cases representing various user inputs, including both compliant and non-compliant examples. It then iterates through these test cases, calling run_guardrail_crew for each input and using the print_test_case_result function to format and display the outcome of each test, clearly indicating the input, the compliance status, the summary, and any policies that were violated, along with the suggested action (proceed or block). This main block serves to showcase the functionality of the implemented guardrail system with concrete examples.
 
-# Hands-On Code Vertex AI Example
+## Hands-On Code Vertex AI Example
 
 Google Cloud's Vertex AI provides a multi-faceted approach to mitigating risks and developing reliable intelligent agents. This includes establishing agent and user identity and authorization, implementing mechanisms to filter inputs and outputs, designing tools with embedded safety controls and predefined context, utilizing built-in Gemini safety features such as content filters and system instructions, and validating model and tool invocations through callbacks.
 
@@ -399,7 +399,25 @@ By integrating these core principles—fault tolerance, modular design, deep obs
 
 **Visual summary**
 
+```mermaid
+graph TD
+    User["👤<br/>User"]
+    Prompt["Prompt"]
+    IVS["🛡️<br/>Input Validation<br/>and Sanitization"]
+    DP["🛡️<br/>Defensive Prompting"]
+    Agent["🧠<br/>Agent"]
+    OV{"🛡️<br/>Output<br/>Validation"}
+    Output["⬆️<br/>Output"]
 
+    User --> Prompt
+    Prompt --> IVS
+    DP --> Agent
+    IVS --> Agent
+    Agent --> OV
+    OV -->|Yes| Output
+    OV -->|No| Prompt
+    Output --> User
+```
 Fig. 1: Guardrail design pattern
 
 ## Key Takeaways

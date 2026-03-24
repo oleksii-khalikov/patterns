@@ -1,8 +1,8 @@
-﻿# Chapter 15: Inter-Agent Communication (A2A)
+﻿# Inter-Agent Communication (A2A)
 
 Individual AI agents often face limitations when tackling complex, multifaceted problems, even with advanced capabilities. To overcome this, Inter-Agent Communication (A2A) enables diverse AI agents, potentially built with different frameworks, to collaborate effectively. This collaboration involves seamless coordination, task delegation, and information exchange.
 
-Google's A2A protocol is an open  standard designed to facilitate this universal communication. This chapter will explore A2A, its practical applications, and its implementation within the Google ADK.
+Google's A2A protocol is an open  standard designed to facilitate this universal communication. This document will explore A2A, its practical applications, and its implementation within the Google ADK.
 
 ## Inter-Agent Communication Pattern Overview
 
@@ -148,7 +148,39 @@ Credential Handling: Agents typically authenticate using secure credentials like
 
 A2A is a protocol that complements Anthropic's Model Context Protocol (MCP) (see Fig. 1). While MCP focuses on structuring context for agents and their interaction with external data and tools, A2A facilitates coordination and communication among agents, enabling task delegation and collaboration.
 
-
+```mermaid
+graph LR
+    subgraph A2A["Agent2Agent Protocol"]
+        SA1["Source Agent"]
+        A2AP["Agent2Agent<br/>Protocol"]
+        TA["Target Agent<br/><br/>Agent 1<br/><br/>Agent 2"]
+        
+        SA1 -->|Request| A2AP
+        A2AP -->|Response| SA1
+        A2AP -->|Request| TA
+        TA -->|Response| A2AP
+    end
+    
+    subgraph MCP["Model Context Protocol"]
+        SA2["Source Agent"]
+        MCPP["Model Context<br/>Protocol MCP"]
+        Tools["Tools<br/><br/>🌐 Browser<br/>📄 Local File System<br/>🗄️ Vector Database<br/>⚙️ APIs"]
+        
+        SA2 -->|Request| MCPP
+        MCPP -->|Response| SA2
+        MCPP -->|Request| Tools
+        Tools -->|Response| MCPP
+    end
+    
+    style A2A stroke:#333,stroke-width:2px
+    style MCP stroke:#333,stroke-width:2px
+    style SA1 stroke:#333,stroke-width:2px
+    style SA2 stroke:#333,stroke-width:2px
+    style A2AP stroke:#333,stroke-width:2px
+    style MCPP stroke:#333,stroke-width:2px
+    style TA stroke:#333,stroke-width:2px
+    style Tools stroke:#333,stroke-width:2px
+```
 Fig.1: Comparison A2A and MCP Protocols
 
 The goal of A2A is to enhance eficiency, reduce integration costs, and foster innovation and interoperability in the development of complex, multi-agent AI systems. Therefore, a thorough understanding of A2A's core components and operational methods is essential for its effective design, implementation, and application in building collaborative and interoperable AI agent systems..
@@ -255,9 +287,25 @@ Further exploration of A2A is recommended through the code demonstration at http
 
 **Visual summary**
 
-
+```mermaid
+graph TD
+    User["👤 User"]
+    Prompt["✨ Prompt"]
+    Agent1["🤖 Agent"]
+    Agent2["🤖 Agent"]
+    Agent3["🤖 Agent"]
+    Others["• • •"]
+    Output["↩️ Output"]
+    
+    User -->|input| Prompt
+    Prompt -->|sends| Agent1
+    Agent1 <-->|communicate| Agent2
+    Agent1 <-->|communicate| Agent3
+    Agent1 <-->|communicate| Others
+    Agent1 -->|returns| Output
+    Output -->|feedback| User
+```
 Fig.2: A2A inter-agent communication pattern
-
 
 ## Key Takeaways
 

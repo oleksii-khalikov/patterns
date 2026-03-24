@@ -1,4 +1,4 @@
-﻿# Chapter 5: Tool Use (Function Calling)
+﻿# Tool Use (Function Calling)
 
 ## Tool Use Pattern Overview
 
@@ -65,7 +65,39 @@ Interacting with smart home devices, IoT platforms, or other connected systems.
 
 Tool Use is what transforms a language model from a text generator into an agent capable of sensing, reasoning, and acting in the digital or physical world (see Fig. 1)
 
-
+```mermaid
+graph LR
+    User["👤 User"] -->|Prompt| Prompt["💬 Prompt"]
+    Prompt --> Agent["🧠 Agent"]
+    Agent --> MultiStep["📋 Multi-step<br/>Tool Calling"]
+    
+    MultiStep --> ProxyTools["🔧 Proxy Tools"]
+    
+    ProxyTools --> Memory["💾 Memory"]
+    ProxyTools --> Database["🗄️ Database"]
+    ProxyTools --> Storage["📦 Storage"]
+    ProxyTools --> WebBrowser["🌐 Web<br/>Browser"]
+    ProxyTools --> WebSearch["🔍 Web<br/>Search"]
+    ProxyTools --> AgentsTool["🤖 Agents<br/>as Tool"]
+    ProxyTools --> Chat["💬 Chat"]
+    ProxyTools --> Maps["📍 Maps"]
+    ProxyTools --> MoreTools["⋯ More Tools"]
+    
+    style Prompt fill:#e8d5f2
+    style Agent fill:#d4f1d4
+    style MultiStep fill:#ffffcc,stroke:#000,stroke-width:3px
+    style ProxyTools fill:#ffffcc
+    style Memory fill:#ffffcc
+    style Database fill:#ffffcc
+    style Storage fill:#ffffcc
+    style WebBrowser fill:#ffffcc
+    style WebSearch fill:#ffffcc
+    style AgentsTool fill:#ffffcc
+    style Chat fill:#ffffcc
+    style Maps fill:#ffffcc
+    style MoreTools fill:#ffffcc
+    style User fill:#cce5ff
+```
 Fig.1: Some examples of an Agent using Tools
 
 ## Hands-On Code Example (LangChain)
@@ -272,7 +304,7 @@ nest_asyncio.apply()
 asyncio.run(call_agent("what's the latest ai news?"))
 ```
 
-This code demonstrates how to create and use a basic agent powered by the Google ADK for Python. The agent is designed to answer questions by utilizing Google Search as a tool. First, necessary libraries from IPython, google.adk, and google.genai are imported. Constants for the application name, user ID, and session ID are defined. An Agent instance named "basic_search_agent" is created with a description and instructions indicating its purpose. It's configured to use the Google Search tool, which is a pre-built tool provided by the ADK. An InMemorySessionService (see Chapter 8) is initialized to manage sessions for the agent. A new session is created for the specified application, user, and session IDs. A Runner is instantiated, linking the created agent with the session service. This runner is responsible for executing the agent's interactions within a session. A helper function call_agent is defined to simplify the process of sending a query to the agent and processing the response. Inside call_agent, the user's query is formatted as a types.Content object with the role 'user'. The runner.run method is called with the user ID, session ID, and the new message content. The runner.run method returns a list of events representing the agent's actions and responses. The code iterates through these events to find the final response. If an event is identified as the final response, the text content of that response is extracted. The extracted agent response is then printed to the console. Finally, the call_agent function is called with the query "what's the latest ai news?" to demonstrate the agent in action.
+This code demonstrates how to create and use a basic agent powered by the Google ADK for Python. The agent is designed to answer questions by utilizing Google Search as a tool. First, necessary libraries from IPython, google.adk, and google.genai are imported. Constants for the application name, user ID, and session ID are defined. An Agent instance named "basic_search_agent" is created with a description and instructions indicating its purpose. It's configured to use the Google Search tool, which is a pre-built tool provided by the ADK. An [InMemorySessionService](08_Memory_Management.md) is initialized to manage sessions for the agent. A new session is created for the specified application, user, and session IDs. A Runner is instantiated, linking the created agent with the session service. This runner is responsible for executing the agent's interactions within a session. A helper function call_agent is defined to simplify the process of sending a query to the agent and processing the response. Inside call_agent, the user's query is formatted as a types.Content object with the role 'user'. The runner.run method is called with the user ID, session ID, and the new message content. The runner.run method returns a list of events representing the agent's actions and responses. The code iterates through these events to find the final response. If an event is identified as the final response, the text content of that response is extracted. The extracted agent response is then printed to the console. Finally, the call_agent function is called with the query "what's the latest ai news?" to demonstrate the agent in action.
 
 **Code execution**: The Google ADK features integrated components for specialized tasks, including an environment for dynamic code execution. The built_in_code_execution tool provides an agent with a sandboxed Python interpreter. This allows the model to write and run code to perform computational tasks, manipulate data structures, and execute procedural scripts. Such functionality is critical for addressing problems that require deterministic logic and precise calculations, which are outside the scope of probabilistic language generation alone.
 
@@ -443,7 +475,21 @@ Overall, this code provides a basic framework for building a conversational AI a
 
 **Visual summary**:
 
-
+```mermaid
+graph TD
+   User["<b>User</b><br/>👤"]
+   Prompt["<b>Prompt</b><br/>➤ —"]
+   Agent["<b>Agent</b><br/>🧠 AI"]
+   Tools["<b>Tools</b><br/>🔧"]
+   Output["<b>Output</b><br/>⊟"]
+    
+    Prompt --> Agent
+    Agent --> Tools
+    Tools --> Agent
+    Agent --> Output
+    Output --> User
+    User --> Prompt
+```
 Fig.2: Tool use design pattern
 
 ## Key Takeaways

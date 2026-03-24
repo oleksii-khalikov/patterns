@@ -1,4 +1,4 @@
-﻿# Chapter 7: Multi-Agent Collaboration
+﻿# Multi-Agent Collaboration
 
 While a monolithic agent architecture can be effective for well-defined problems, its capabilities are often constrained when faced with complex, multi-domain tasks. The Multi-Agent Collaboration pattern addresses these limitations by structuring a system as a cooperative ensemble of distinct, specialized agents. This approach is predicated on the principle of task decomposition, where a high-level objective is broken down into discrete sub-problems. Each sub-problem is then assigned to an agent possessing the specific tools, data access, or reasoning capabilities best suited for that task.
 
@@ -21,7 +21,30 @@ Collaboration can take various forms:
 
 A multi-agent system (see Fig.1) fundamentally comprises the delineation of agent roles and responsibilities, the establishment of communication channels through which agents exchange information, and the formulation of a task flow or interaction protocol that directs their collaborative endeavors.
 
-
+```mermaid
+graph TD
+    User["👤 User"]
+    Supervisor["🧠 Supervisor"]
+    Specialist1["🧠 Specialist"]
+    Specialist2["🧠 Specialist"]
+    Specialist3["🧠 Specialist"]
+    Agent1["🧠 Agent"]
+    Agent2["🧠 Agent"]
+    
+    User <--> Supervisor
+    Supervisor --> Specialist1
+    Supervisor --> Specialist2
+    Supervisor --> Specialist3
+    Specialist3 --> Agent1
+    Specialist3 --> Agent2
+    
+    style Supervisor fill:#f0f0f0,stroke:#333
+    style Specialist1 fill:#f0f0f0,stroke:#333
+    style Specialist2 fill:#f0f0f0,stroke:#333
+    style Specialist3 fill:#f0f0f0,stroke:#333
+    style Agent1 fill:#f0f0f0,stroke:#333
+    style Agent2 fill:#f0f0f0,stroke:#333
+```
 Fig.1: Example of multi-agent system
 
 Frameworks such as Crew AI and Google ADK are engineered to facilitate this paradigm by providing structures for the specification of agents, tasks, and their interactive procedures. This approach is particularly effective for challenges necessitating a variety of specialized knowledge, encompassing multiple discrete phases, or leveraging the advantages of concurrent processing and the corroboration of information across agents.
@@ -51,8 +74,85 @@ Understanding the intricate ways in which agents interact and communicate is fun
 5. **Hierarchical**: The "Hierarchical" model expands upon the supervisor concept to create a multi-layered organizational structure. This involves multiple levels of supervisors, with higher-level supervisors overseeing lower-level ones, and ultimately, a collection of operational agents at the lowest tier. This structure is well-suited for complex problems that can be decomposed into sub-problems, each managed by a specific layer of the hierarchy. It provides a structured approach to scalability and complexity management, allowing for distributed decision-making within defined boundaries.
 6. **Custom**: The "Custom" model represents the ultimate flexibility in multi-agent system design. It allows for the creation of unique interrelationship and communication structures tailored precisely to the specific requirements of a given problem or application. This can involve hybrid approaches that combine elements from the previously mentioned models, or entirely novel designs that emerge from the unique constraints and opportunities of the environment. Custom models often arise from the need to optimize for specific performance metrics, handle highly dynamic environments, or incorporate domain-specific knowledge into the system's architecture. Designing and implementing custom models typically requires a deep understanding of multi-agent systems principles and careful consideration of communication protocols, coordination mechanisms, and emergent behaviors.
 
+```mermaid
+graph TB
+    subgraph SA["Single Agent"]
+        SA1["🧠"]
+        SA2["🔧 Tools"]
+        SA1 ---|uses| SA2
+    end
 
-   Fig. 2: Agents communicate and interact in various ways.
+    subgraph NET["Network"]
+        N1["🧠"]
+        N2["🧠"]
+        N3["🧠"]
+        N4["🧠"]
+        N1 <---|communicate| N2
+        N1 <---|communicate| N3
+        N2 <---|communicate| N3
+        N2 <---|communicate| N4
+        N3 <---|communicate| N4
+    end
+
+    subgraph SUP["Supervisor"]
+        S1["🧠 Supervisor"]
+        S2["🧠"]
+        S3["🧠"]
+        S4["🧠"]
+        S1 ---|directs| S2
+        S1 ---|directs| S3
+        S1 ---|directs| S4
+        S2 ---|reports| S1
+        S3 ---|reports| S1
+        S4 ---|reports| S1
+    end
+
+    subgraph STOOL["Supervisor as Tools"]
+        ST1["🧠"]
+        ST2["🔧 Supervisor"]
+        ST1 ---|uses| ST2
+    end
+
+    subgraph HIER["Hierarchical"]
+        H1["🧠"]
+        H2["🧠"]
+        H3["🧠"]
+        H4["🧠"]
+        H5["🧠"]
+        H6["🧠"]
+        H7["🧠"]
+        H1 ---|controls| H2
+        H1 ---|controls| H3
+        H2 ---|controls| H4
+        H2 ---|controls| H5
+        H3 ---|controls| H6
+        H3 ---|controls| H7
+    end
+
+    subgraph CUST["Custom"]
+        C1["🧠"]
+        C2["🧠"]
+        C3["🧠"]
+        C4["🧠"]
+        C5["🧠"]
+        C6["🧠"]
+        C7["🧠"]
+        C1 <---|interact| C2
+        C1 <---|interact| C3
+        C2 <---|interact| C3
+        C2 <---|interact| C4
+        C3 <---|interact| C5
+        C4 <---|interact| C6
+        C5 <---|interact| C6
+        C5 <---|interact| C7
+    end
+
+    SA --> NET
+    NET --> SUP
+    STOOL --> HIER
+    HIER --> CUST
+```
+Fig. 2: Agents communicate and interact in various ways.
 
 In summary, the choice of interrelationship and communication model for a multi-agent system is a critical design decision. Each model offers distinct advantages and disadvantages, and the optimal choice depends on factors such as the complexity of the task, the number of agents, the desired level of autonomy, the need for robustness, and the acceptable communication overhead. Future advancements in multi-agent systems will likely continue to explore and refine these models, as well as develop new paradigms for collaborative intelligence.
 
@@ -207,8 +307,6 @@ ConditionChecker() # Instantiating the well-defined custom agent.
 
 # This poller will now execute 'process_step' # and then 'ConditionChecker'
 # repeatedly until the status is 'completed' or 10 iterations # have passed.
-
-
 ```
 
 This code excerpt elucidates the SequentialAgent pattern within the Google ADK, engineered for the construction of linear workflows. This code defines a sequential agent pipeline using the google.adk.agents library. The pipeline consists of two agents, step1 and step2. step1 is named "Step1_Fetch" and its output will be stored in the session state under the key "data". step2 is named "Step2_Process" and is instructed to analyze the information stored in session.state["data"] and provide a summary. The SequentialAgent named "MyPipeline" orchestrates the execution of these sub-agents. When the pipeline is run with an initial input, step1 will execute first. The response from step1 will be saved into the session state under the key "data". Subsequently, step2 will execute, utilizing the information that step1 placed into the state as per its instruction. This structure allows for building workflows where the output of one agent becomes the input for the next. This is a common pattern in creating multi-step AI or data processing pipelines.
@@ -313,7 +411,26 @@ name="Artist", model="gemini-2.0-flash", instruction=(
 
 **Visual summary**
 
-
+```mermaid
+graph TD
+    U["👤 User"]
+    P["Prompt"]
+    O["Output"]
+    
+    subgraph Agents["Multi-Agent System"]
+        A1["Agent (1)"]
+        A2["Agent (2)"]
+        Ai["Agent (i)"]
+        An["Agent (n)"]
+    end
+    
+    U -->|sends| P
+    P -->|processes| Agents
+    Agents -->|generates| O
+    O -->|returns| U
+    
+    note["*Agents can have multiple agents connections."]
+```
 Fig.3: Multi-Agent design pattern
 
 ## Key Takeaways
@@ -325,7 +442,7 @@ Fig.3: Multi-Agent design pattern
 
 ## Conclusion
 
-This chapter explored the Multi-Agent Collaboration pattern, demonstrating the benefits of orchestrating multiple specialized agents within systems. We examined various collaboration models, emphasizing the pattern's essential role in addressing complex, multifaceted problems across diverse domains. Understanding agent collaboration naturally leads to an inquiry into their interactions with the external environment.
+This document explored the Multi-Agent Collaboration pattern, demonstrating the benefits of orchestrating multiple specialized agents within systems. We examined various collaboration models, emphasizing the pattern's essential role in addressing complex, multifaceted problems across diverse domains. Understanding agent collaboration naturally leads to an inquiry into their interactions with the external environment.
 
 ## References
 

@@ -1,4 +1,4 @@
-﻿# Chapter 14: Knowledge Retrieval (RAG)
+﻿# Knowledge Retrieval (RAG)
 
 LLMs exhibit substantial capabilities in generating human-like text. However, their knowledge base is typically confined to the data on which they were trained, limiting their access to real-time information, specific company data, or highly specialized details. Knowledge Retrieval (RAG, or  Retrieval Augmented Generation), addresses this limitation. RAG enables LLMs to access and integrate external, current, and context-specific information, thereby enhancing the accuracy, relevance, and factual basis of their outputs.
 
@@ -21,7 +21,40 @@ To fully appreciate how RAG functions, it's essential to understand a few core c
 
 **Semantic Similarity and Distance**: Semantic similarity is a more advanced form of text similarity that focuses purely on the meaning and context of the text, rather than just the words used. It aims to understand if two pieces of text convey the same concept or idea. Semantic distance is the inverse of this; a high semantic similarity implies a low semantic distance, and vice versa. In RAG, semantic search relies on finding documents with the smallest semantic distance to the user's query. For instance, the phrases "a furry feline companion" and "a domestic cat" have no words in common besides "a". However, a model that understands semantic similarity would recognize that they refer to the same thing and would consider them to be highly similar. This is because their embeddings would be very close in the vector space, indicating a small semantic distance. This is the "smart search" that allows RAG to find relevant information even when the user's wording doesn't exactly match the text in the knowledge base.
 
+```mermaid
+graph TD
+    A["📋 Query"]
+    B["📖 External Document"]
+    C["Embedding"]
+    D["Chunk 1"]
+    E["Chunk 2"]
+    F["Chunk 3"]
+    G["Embedding 1"]
+    H["Embedding 2"]
+    I["Embedding 3"]
+    J[("🗄️ Vector Database")]
+    K["Response Synthesis"]
 
+    subgraph VDB["Vector Database"]
+        G
+        H
+        I
+        J
+    end
+    
+    A --> C
+    B --> D
+    B --> E
+    B --> F
+    D --> G
+    E --> H
+    F --> I
+    C -->|"Most Similar k"|VDB
+    C --> K
+    VDB --> K
+        
+    style VDB stroke:#01579b,stroke-width:2px
+```
 Fig.1: RAG Core Concepts: Chunking, Embeddings, and Vector Database
 
 **Chunking of Documents**: Chunking is the process of breaking down large documents into smaller, more manageable pieces, or "chunks." For a RAG system to work eficiently, it cannot feed entire large documents into the LLM. Instead, it processes these smaller chunks. The way documents are chunked is important for preserving the context and meaning of the information. For instance, instead of treating a 50-page user manual as a single block of text, a chunking strategy might break it down into sections, paragraphs, or even sentences. For instance, a section on "Troubleshooting" would be a separate chunk from the "Installation Guide." When a user asks a question about a specific problem, the RAG system can then retrieve the most relevant troubleshooting chunk, rather than the entire manual. This makes the retrieval process faster and the information provided to the LLM more focused and relevant to the user's immediate need. Once documents are chunked, the RAG system must employ a retrieval technique to find the most relevant pieces for a given query. The primary method is vector search, which uses embeddings and semantic distance to find chunks that are conceptually similar to the user's question. An older, but still valuable, technique is BM25, a keyword-based algorithm that ranks chunks based on term frequency without understanding semantic meaning. To get the best of both worlds, hybrid search approaches are often used, combining the keyword precision of BM25 with the contextual understanding of semantic search. This fusion allows for more robust and accurate retrieval, capturing both literal matches and conceptual relevance.
@@ -40,7 +73,61 @@ Use cases include complex financial analysis, connecting companies to market eve
 
 First, an agent excels at reflection and source validation. If a user asks, "What is our company's policy on remote work?" a standard RAG might pull up a 2020 blog post alongside the oficial 2025 policy document. The agent, however, would analyze the documents' metadata, recognize the 2025 policy as the most current and authoritative source, and discard the outdated blog post before sending the correct context to the LLM for a precise answer.
 
-
+```mermaid
+graph TD
+    A["Naive RAG"]
+    B["Query Vectors"]
+    C[("Vectors DB")]
+    D["Chunks"]
+    E["Feed to Model"]
+    F["LLM"]
+    
+    G["Agentic RAG"]
+    H["Picks Tools to call"]
+    I["🛠️ Tools"]
+    J1["Source 1"]
+    J2["Source 2"]
+    J3["Source 3"]
+    J4["More Sources..."]
+    K1["Feed to Model"]
+    K2["Feed to Model"]
+    K3["Feed to Model"]
+    K4["Feed to Model"]
+    L["LLM"]
+    
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
+    
+    G --> H
+    H --> I
+    I --> J1
+    I --> J2
+    I --> J3
+    I --> J4
+    J1 --> K1
+    J2 --> K2
+    J3 --> K3
+    J4 --> K4
+    K1 --> L
+    K2 --> L
+    K3 --> L
+    K4 --> L
+    
+    style A fill:#fff,stroke:#000
+    style C fill:#fff,stroke:#000
+    style D fill:#fff,stroke:#000
+    style F fill:#fff,stroke:#000
+    style G fill:#fff,stroke:#000
+    style I fill:#fff,stroke:#000
+    style J1 fill:#fff,stroke:#000
+    style J2 fill:#fff,stroke:#000
+    style J3 fill:#fff,stroke:#000
+    style J4 fill:#fff,stroke:#000
+    style L fill:#fff,stroke:#000
+```
 Fig.2: Agentic RAG introduces a reasoning agent that actively evaluates, reconciles, and refines retrieved information to ensure a more accurate and trustworthy final response.
 
 Second, an agent is adept at reconciling knowledge conflicts. Imagine a financial analyst asks, "What was Project Alpha's Q1 budget?" The system retrieves two documents: an initial proposal stating a €50,000 budget and a finalized financial report listing it as €65,000. An Agentic RAG would identify this contradiction, prioritize the financial report as the more reliable source, and provide the LLM with the verified figure, ensuring the final answer is based on the most accurate data.
@@ -230,9 +317,35 @@ This Python code illustrates a Retrieval-Augmented Generation (RAG) pipeline imp
 
 **Visual summary**
 
-Knowledge Retrieval pattern: an AI agent to query and retrieve information from structured databases
+```mermaid
+graph TD
+    User["👤 User"]
+    Prompt["📝 Prompt"]
+    Agent["🧠 Agent"]
+    Database[("🗄️ Database")]
+    
+    User -->|input| Prompt
+    Prompt -->|send| Agent
+    Agent --> Database
+    Database --> Agent
+    Agent -->|↩️ Output| User
+```
+Fig. 3: Knowledge Retrieval pattern: an AI agent to query and retrieve information from structured databases
 
-Fig. 3: Knowledge Retrieval pattern: an AI agent to find and synthesize information from the public internet in response to user queries.
+```mermaid
+graph TD
+    User["👤 User"]
+    Prompt["📝 Prompt"]
+    Agent["🧠 Agent"]
+    Web["🔍 Web Search"]
+    
+    User -->|input| Prompt
+    Prompt -->|send| Agent
+    Agent --> Web
+    Web --> Agent
+    Agent -->|↩️ Output| User
+```
+Fig. 4: Knowledge Retrieval pattern: an AI agent to find and synthesize information from the public internet in response to user queries.
 
 ## Key Takeaways
 

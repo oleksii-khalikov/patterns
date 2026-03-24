@@ -1,6 +1,6 @@
-﻿# Chapter 21: Exploration and Discovery
+﻿# Exploration and Discovery
 
-This chapter explores patterns that enable intelligent agents to actively seek out novel information, uncover new possibilities, and identify unknown unknowns within their operational environment. Exploration and discovery differ from reactive behaviors or optimization within a predefined solution space. Instead, they focus on agents proactively venturing into unfamiliar territories, experimenting with new approaches, and generating new knowledge or understanding. This pattern is crucial for agents operating in open-ended, complex, or rapidly evolving domains where static knowledge or pre-programmed solutions are insuficient. It emphasizes the agent's capacity to expand its understanding and capabilities.
+This document explores patterns that enable intelligent agents to actively seek out novel information, uncover new possibilities, and identify unknown unknowns within their operational environment. Exploration and discovery differ from reactive behaviors or optimization within a predefined solution space. Instead, they focus on agents proactively venturing into unfamiliar territories, experimenting with new approaches, and generating new knowledge or understanding. This pattern is crucial for agents operating in open-ended, complex, or rapidly evolving domains where static knowledge or pre-programmed solutions are insuficient. It emphasizes the agent's capacity to expand its understanding and capabilities.
 
 ## Practical Applications & Use Cases
 
@@ -23,7 +23,7 @@ The development of the AI co-scientist addresses challenges in scientific resear
 
 **System Architecture and Methodology**: The architecture of the AI co-scientist is based on a multi-agent framework, structured to emulate collaborative and iterative processes. This design integrates specialized AI agents, each with a specific role in contributing to a research objective. A supervisor agent manages and coordinates the activities of these individual agents within an asynchronous task execution framework that allows for flexible scaling of computational resources.
 
-The core agents and their functions include (see Fig. 1):
+The core agents and their functions include:
 
 * **Generation agent**: Initiates the process by producing initial hypotheses through literature exploration and simulated scientific debates.
 * **Reflection agent**: Acts as a peer reviewer, critically assessing the correctness, novelty, and quality of the generated hypotheses.
@@ -33,9 +33,6 @@ The core agents and their functions include (see Fig. 1):
 * **Meta-review agent**: Synthesizes insights from all reviews and debates to identify common patterns and provide feedback, enabling the system to continuously improve.
 
 The system's operational foundation relies on Gemini, which provides language understanding, reasoning, and generative abilities. The system incorporates "test-time compute scaling," a mechanism that allocates increased computational resources to iteratively reason and enhance outputs. The system processes and synthesizes information from diverse sources, including academic literature, web-based data, and databases.
-
-
-Fig. 1: (Courtesy of the Authors) AI Co-Scientist: Ideation to Validation
 
 The system follows an iterative "generate, debate, and evolve" approach mirroring the scientific method. Following the input of a scientific problem from a human scientist, the system engages in a self-improving cycle of hypothesis generation, evaluation, and refinement. Hypotheses undergo systematic assessment, including internal evaluations among agents and a tournament-based ranking mechanism.
 
@@ -208,8 +205,23 @@ In summary, "Agent Laboratory" represents a sophisticated framework for autonomo
 
 **Visual summary**
 
-
-Fig.2: Exploration and Discovery design pattern
+```mermaid
+flowchart LR
+    User["👤<br/>User"]
+    Prompt["✨<br/>Prompt"]
+    Agent["🧠<br/>Agent"]
+    AgentCritique["🧠<br/>Agent: Critique"]
+    HP["📋<br/>HP 1<br/>HP 2<br/>HP 3<br/>HP 4<br/>HP n"]
+    Output["📤<br/>Output"]
+    
+    User --> Prompt
+    Prompt --> Agent
+    Agent --> HP
+    Agent <--> AgentCritique
+    Agent --> Output
+    Output --> User
+```
+Fig.1: Exploration and Discovery design pattern
 
 ## Key Takeaways
 

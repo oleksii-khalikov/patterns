@@ -1,4 +1,4 @@
-﻿# Chapter 13: Human-in-the-Loop
+﻿# Human-in-the-Loop
 
 The Human-in-the-Loop (HITL) pattern represents a pivotal strategy in the development and deployment of Agents. It deliberately interweaves the unique strengths of human cognition—such as judgment, creativity, and nuanced understanding—with the computational power and eficiency of AI. This strategic integration is not merely an option but often a necessity, especially as AI systems become increasingly embedded in critical decision-making processes.
 
@@ -104,7 +104,19 @@ A key feature of this architecture is its capacity for deep personalization, ach
 
 **Visual summary**:
 
-
+```mermaid
+graph TD
+    User["👤 User"]
+    Prompt["📝 Prompt"]
+    Agent["🧠 Agent"]
+    Human["👤 Human"]
+    
+    User -->|input| Prompt
+    Prompt -->|send| Agent
+    Agent -->|process| Human
+    Human -->|feedback| Agent
+    Agent -->|↩️ Output| User
+```
 Fig.1: Human in the loop design pattern
 
 ## Key Takeaways
@@ -119,7 +131,7 @@ Key takeaways include:
 
 ## Conclusion
 
-This chapter explored the vital Human-in-the-Loop (HITL) pattern, emphasizing its role in creating robust, safe, and ethical AI systems. We discussed how integrating human oversight, intervention, and feedback into agent workflows can significantly enhance their performance and trustworthiness, especially in complex and sensitive domains. The practical applications demonstrated HITL's widespread utility, from content moderation and medical diagnosis to autonomous driving and customer support. The conceptual code example provided a glimpse into how ADK can facilitate these human-agent interactions through escalation mechanisms. As AI capabilities continue to advance, HITL remains a cornerstone for responsible AI development, ensuring that human values and expertise remain central to intelligent system design.
+This document explored the vital Human-in-the-Loop (HITL) pattern, emphasizing its role in creating robust, safe, and ethical AI systems. We discussed how integrating human oversight, intervention, and feedback into agent workflows can significantly enhance their performance and trustworthiness, especially in complex and sensitive domains. The practical applications demonstrated HITL's widespread utility, from content moderation and medical diagnosis to autonomous driving and customer support. The conceptual code example provided a glimpse into how ADK can facilitate these human-agent interactions through escalation mechanisms. As AI capabilities continue to advance, HITL remains a cornerstone for responsible AI development, ensuring that human values and expertise remain central to intelligent system design.
 
 ## References
 

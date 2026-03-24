@@ -1,4 +1,4 @@
-﻿# Chapter 1: Prompt Chaining
+﻿# Prompt Chaining
 
 ## Prompt Chaining Pattern Overview
 
@@ -175,8 +175,30 @@ This Python code demonstrates how to use the LangChain library to process text. 
 
 Context Engineering (see Fig.1) is the systematic discipline of designing, constructing, and delivering a complete informational environment to an AI model prior to token generation. This methodology asserts that the quality of a model's output is less dependent on the model's architecture itself and more on the richness of the context provided.
 
-[[fig.1 p.31]]
-
+```mermaid
+graph TB
+    subgraph Context["Context Engineering"]
+        direction TB
+        RAG["🔍 RAG"]
+        PE["➤ Prompt Engineering"]
+        SO["📋 Structured Outputs"]
+        SH["📋 State/History"]
+        MEM["💾 Memory"]
+        
+        RAG -.overlaps.- PE
+        PE -.overlaps.- SO
+        SO -.overlaps.- MEM
+        MEM -.overlaps.- SH
+        SH -.overlaps.- RAG
+    end
+    
+    style Context fill:#a8c5dd
+    style RAG fill:#c8e6a0
+    style PE fill:#ffd966
+    style SO fill:#ffff99
+    style SH fill:#f4b5d0
+    style MEM fill:#d9c3d9
+```
 Fig.1: Context Engineering is the discipline of building a rich, comprehensive informational environment for an AI, as the quality of this context is a primary factor in enabling advanced Agentic performance.
 
 It represents a significant evolution from traditional prompt engineering, which focuses primarily on optimizing the phrasing of a user's immediate query. Context Engineering expands this scope to include several layers of information, such as the **system prompt**, which is a foundational set of instructions defining the AI's operational parameters—for instance, "_You are a technical writer; your tone must be formal and precise._" The context is further enriched with external data. This includes retrieved documents, where the AI actively fetches information from a knowledge base to inform its response, such as pulling technical specifications for a project. It also incorporates tool outputs, which are the results from the AI using an external API to obtain real-time data, like querying a calendar to determine a user's availability. This explicit data is combined with critical implicit data, such as user identity, interaction history, and environmental state. The core principle is that even advanced models underperform when provided with a limited or poorly constructed view of the operational environment.
@@ -197,6 +219,25 @@ This structured approach is what differentiates a rudimentary AI tool from a mor
 
 **Visual summary**
 
+```mermaid
+graph TD
+    User["👤 User"]
+    Output["Output"]
+    
+    User -->|input| Prompt1["Prompt 1"]
+    User -->|input| MiddleNode1["• • •"]
+    User -->|input| PromptN["Prompt n"]
+    
+    Prompt1 -->|process| Agent1["🧠 Agent 1"]
+    MiddleNode1 -->|process| MiddleNode2["• • •"]
+    PromptN -->|process| AgentN["🧠 Agent n"]
+    
+    Agent1 --> MiddleNode2
+    MiddleNode2 --> AgentN
+    
+    AgentN -->|output| Output
+    Output -->|feedback| User
+```
 Fig. 2: Prompt Chaining Pattern: Agents receive a series of prompts from the user, with the output of each agent serving as the input for the next in the chain.
 
 ## Key Takeaways
@@ -221,26 +262,3 @@ By deconstructing complex problems into a sequence of simpler, more manageable s
 5.  Crew AI Documentation (Tasks and Processes): https://docs.crewai.com/ 
 6.  Google AI for Developers (Prompting Guides): https://cloud.google.com/discover/what-is-prompt-engineering?hl=en 
 7.  Vertex Prompt Optimizer https://cloud.google.com/vertex-ai/generative-ai/docs/learn/prompts/prompt-optimizer
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-13

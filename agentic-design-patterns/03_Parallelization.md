@@ -1,8 +1,8 @@
-﻿# Chapter 3: Parallelization 
+﻿# Parallelization
 
 ## Parallelization Pattern Overview
 
-In the previous chapters, we've explored Prompt Chaining for sequential workflows and Routing for dynamic decision-making and transitions between different paths. While these patterns are essential, many complex agentic tasks involve multiple sub-tasks that can be executed simultaneously rather than one after another. This is where the **Parallelization** pattern becomes crucial.
+We've explored [Prompt Chaining](01_Prompt_Chaining.md) for sequential workflows and [Routing](02_Routing.md) for dynamic decision-making and transitions between different paths. While these patterns are essential, many complex agentic tasks involve multiple sub-tasks that can be executed simultaneously rather than one after another. This is where the **Parallelization** pattern becomes crucial.
 
 Parallelization involves executing multiple components, such as LLM calls, tool usages, or even entire sub-agents, concurrently (see Fig.1). Instead of waiting for one step to complete before starting the next, parallel execution allows independent tasks to run at the same time, significantly reducing the overall execution time for tasks that can be broken down into independent parts.
 
@@ -24,7 +24,25 @@ The core idea is to identify parts of the workflow that do not depend on the out
 
 Implementing parallelization often requires frameworks that support asynchronous execution or multi-threading/multi-processing. Modern agentic frameworks are designed with asynchronous operations in mind, allowing you to easily define steps that can run in parallel.
 
-
+```mermaid
+graph LR
+    Input["Input"]
+    
+    Input --> PA["Parallel Agent"]
+    
+    PA --> SA1["Sub Agents (1)"]
+    PA --> SA2["Sub Agents (2)"]
+    PA --> SA3["Sub Agents (3)"]
+    
+    SA1 --> O1["Output (1)"]
+    SA2 --> O2["Output (2)"]
+    SA3 --> O3["Output (3)"]
+    
+    style PA fill:#f9f9f9,stroke:#000
+    style SA1 fill:#fff,stroke:#000
+    style SA2 fill:#fff,stroke:#000
+    style SA3 fill:#fff,stroke:#000
+```
 Fig.1. Example of parallelization with sub-agents
 
 Frameworks like LangChain, LangGraph, and Google ADK provide mechanisms for parallel execution. In LangChain Expression Language (LCEL), you can achieve parallel execution by combining runnable objects using operators like | (for sequential) and by structuring your chains or graphs to have branches that execute concurrently. LangGraph, with its graph structure, allows you to define multiple nodes that can be executed from a single state transition, effectively enabling parallel branches in the workflow. Google ADK provides robust, native mechanisms to facilitate and manage the parallel execution of agents, significantly enhancing the eficiency and scalability of complex, multi-agent systems. This inherent capability within the ADK framework allows developers to design and implement solutions where multiple agents can operate concurrently, rather than sequentially.
@@ -297,7 +315,25 @@ Finally, a SequentialAgent named ResearchAndSynthesisPipeline is created to orch
 
 **Visual summary**
 
-
+```mermaid
+graph TD
+    User["👤 User"]
+    Prompt["✨ Prompt"]
+    Agent1["🧠 Agent"]
+    Agent2["🧠 Agent"]
+    Tools["• • •"]
+    Output1["➜ Output"]
+    Output2["➜ Output"]
+    
+    User --> Prompt
+    Prompt -->|input| Agent1
+    Prompt -->|input| Agent2
+    Prompt -->|input| Tools
+    Agent1 -->|process| Output1
+    Agent2 -->|process| Output2
+    Output1 -->|results| User
+    Output2 -->|results| User
+```
 Fig.2: Parallelization design pattern
 
 ## Key Takeaways
