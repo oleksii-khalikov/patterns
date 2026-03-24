@@ -1,53 +1,46 @@
-﻿
-Chapter 11: Goal Setting and Monitoring
+﻿# Chapter 11: Goal Setting and Monitoring
 
 For AI agents to be truly effective and purposeful, they need more than just the ability to process information or use tools; they need a clear sense of direction and a way to know if they're actually succeeding. This is where the Goal Setting and Monitoring pattern comes into play. It's about giving agents specific objectives to work towards and equipping them with the means to track their progress and determine if those objectives have been met.
 
-Goal Setting and Monitoring Pattern Overview
+## Goal Setting and Monitoring Pattern Overview
 
-Think about planning a trip. You don't just spontaneously appear at your destination. You decide where you want to go (the goal state), figure out where you are starting from (the initial state), consider available options (transportation, routes, budget), and then map out a sequence of steps: book tickets, pack bags, travel to the airport/station, board the transport, arrive, find accommodation, etc. This
-step-by-step process, often considering dependencies and constraints, is fundamentally what we mean by planning in agentic systems.
+Think about planning a trip. You don't just spontaneously appear at your destination. You decide where you want to go (the goal state), figure out where you are starting from (the initial state), consider available options (transportation, routes, budget), and then map out a sequence of steps: book tickets, pack bags, travel to the airport/station, board the transport, arrive, find accommodation, etc. This step-by-step process, often considering dependencies and constraints, is fundamentally what we mean by planning in agentic systems.
 
 In the context of AI agents, planning typically involves an agent taking a high-level objective and autonomously, or semi-autonomously, generating a series of intermediate steps or sub-goals. These steps can then be executed sequentially or in a more complex flow, potentially involving other patterns like tool use, routing, or multi-agent collaboration. The planning mechanism might involve sophisticated search algorithms, logical reasoning, or increasingly, leveraging the capabilities of large language models (LLMs) to generate plausible and effective plans based on their training data and understanding of tasks.
 
-A good planning capability allows agents to tackle problems that aren't simple, single-step queries. It enables them to handle multi-faceted requests, adapt to changing circumstances by replanning, and orchestrate complex workflows. It's a foundational pattern that underpins many advanced agentic behaviors, turning a
-simple reactive system into one that can proactively work towards a defined objective.
+A good planning capability allows agents to tackle problems that aren't simple, single-step queries. It enables them to handle multi-faceted requests, adapt to changing circumstances by replanning, and orchestrate complex workflows. It's a foundational pattern that underpins many advanced agentic behaviors, turning a simple reactive system into one that can proactively work towards a defined objective.
 
-Practical Applications & Use Cases
+## Practical Applications & Use Cases
 
 The Goal Setting and Monitoring pattern is essential for building agents that can operate autonomously and reliably in complex, real-world scenarios. Here are some practical applications:
 
-1
-
-●   Customer Support Automation: An agent's goal might be to "resolve customer's billing inquiry." It monitors the conversation, checks database entries, and uses tools to adjust billing. Success is monitored by confirming the billing change and receiving positive customer feedback. If the issue isn't resolved, it escalates.
-●   Personalized Learning Systems: A learning agent might have the goal to "improve students’ understanding of algebra." It monitors the student's progress on exercises, adapts teaching materials, and tracks performance metrics like accuracy and completion time, adjusting its approach if the student struggles.
-●   Project Management Assistants: An agent could be tasked with "ensuring project milestone X is completed by Y date." It monitors task statuses, team communications, and resource availability, flagging delays and suggesting corrective actions if the goal is at risk.
-●   Automated Trading Bots: A trading agent's goal might be to "maximize portfolio gains while staying within risk tolerance." It continuously monitors market data, its current portfolio value, and risk indicators, executing trades when conditions align with its goals and adjusting strategy if risk thresholds are breached.
-●   Robotics and Autonomous Vehicles: An autonomous vehicle's primary goal is "safely transport passengers from A to B." It constantly monitors its environment (other vehicles, pedestrians, trafic signals), its own state (speed, fuel), and its progress along the planned route, adapting its driving behavior to achieve the goal safely and eficiently.
-●   Content Moderation: An agent's goal could be to "identify and remove harmful content from platform X." It monitors incoming content, applies classification models, and tracks metrics like false positives/negatives, adjusting its filtering criteria or escalating ambiguous cases to human reviewers.
+* **Customer Support Automation**: An agent's goal might be to "resolve customer's billing inquiry." It monitors the conversation, checks database entries, and uses tools to adjust billing. Success is monitored by confirming the billing change and receiving positive customer feedback. If the issue isn't resolved, it escalates.
+* **Personalized Learning Systems**: A learning agent might have the goal to "improve students’ understanding of algebra." It monitors the student's progress on exercises, adapts teaching materials, and tracks performance metrics like accuracy and completion time, adjusting its approach if the student struggles.
+* **Project Management Assistants**: An agent could be tasked with "ensuring project milestone X is completed by Y date." It monitors task statuses, team communications, and resource availability, flagging delays and suggesting corrective actions if the goal is at risk.
+* **Automated Trading Bots**: A trading agent's goal might be to "maximize portfolio gains while staying within risk tolerance." It continuously monitors market data, its current portfolio value, and risk indicators, executing trades when conditions align with its goals and adjusting strategy if risk thresholds are breached.
+* **Robotics and Autonomous Vehicles**: An autonomous vehicle's primary goal is "safely transport passengers from A to B." It constantly monitors its environment (other vehicles, pedestrians, trafic signals), its own state (speed, fuel), and its progress along the planned route, adapting its driving behavior to achieve the goal safely and eficiently.
+* **Content Moderation**: An agent's goal could be to "identify and remove harmful content from platform X." It monitors incoming content, applies classification models, and tracks metrics like false positives/negatives, adjusting its filtering criteria or escalating ambiguous cases to human reviewers.
 
 This pattern is fundamental for agents that need to operate reliably, achieve specific outcomes, and adapt to dynamic conditions, providing the necessary framework for intelligent self-management.
 
-Hands-On Code Example
+## Hands-On Code Example
 
 To illustrate the Goal Setting and Monitoring pattern, we have an example using LangChain and OpenAI APIs. This Python script outlines an autonomous AI agent engineered to generate and refine Python code. Its core function is to produce solutions for specified problems, ensuring adherence to user-defined quality benchmarks.
 
 It employs a "goal-setting and monitoring" pattern where it doesn't just generate code once, but enters into an iterative cycle of creation, self-evaluation, and improvement.
 
-2
-
 The agent's success is measured by its own AI-driven judgment on whether the generated code successfully meets the initial objectives. The ultimate output is a polished, commented, and ready-to-use Python file that represents the culmination of this refinement process.
 
-Dependencies:
+**Dependencies**:
 
-
-pip install langchain_openai openai python-dotenv .env file with key in OPENAI_API_KEY
-
-
+```Bash
+pip install langchain_openai openai python-dotenv 
+.env file with key in OPENAI_API_KEY
+```
 
 You can best understand this script by imagining it as an autonomous AI programmer assigned to a project (see Fig. 1). The process begins when you hand the AI a detailed project brief, which is the specific coding problem it needs to solve.
 
-
+```python
 # MIT License
 # Copyright (c) 2025 Mahtab Syed
 # https://www.linkedin.com/in/mahtabsyed/
@@ -105,10 +98,6 @@ version:\n{feedback}\n"
 base_prompt += "\nPlease return only the revised Python code. Do not include comments or explanations outside the code."
 return base_prompt
 
-4
-
-
-
 def get_code_feedback(code: str, goals: list[str]) -> str: print("🔍 Evaluating code against the goals...") feedback_prompt = f"""
 You are a Python code reviewer. A code snippet is shown below. Based on the following goals:
 
@@ -138,9 +127,6 @@ response = llm.invoke(review_prompt).content.strip().lower() return response == 
 def clean_code_block(code: str) -> str: lines = code.strip().splitlines()
 if lines and lines[0].strip().startswith("```"): lines = lines[1:]
 if lines and lines[-1].strip() == "```":
-
-5
-
 
 lines = lines[:-1]
 return "\n".join(lines).strip()
@@ -178,9 +164,6 @@ for g in goals: print(f"  - {g}")
 
 previous_code = ""
 
-6
-
-
 feedback = ""
 
 for i in range(max_iterations):
@@ -215,9 +198,6 @@ run_code_agent(use_case_input, goals_input)
 # Example 2
 # use_case_input = "Write code to count the number of files in
 
-7
-
-
 current directory and all its nested sub directories, and print the total count"
 # goals_input = (
 #	"Code simple to understand, Functionally correct, Handles comprehensive edge cases, Ignore recommendations for performance, Ignore recommendations for test suite use like unittest or pytest"
@@ -228,88 +208,22 @@ current directory and all its nested sub directories, and print the total count"
 # use_case_input = "Write code which takes a command line input of a word doc or docx file and opens it and counts the number of words, and characters in it and prints all"
 # goals_input = "Code simple to understand, Functionally correct, Handles edge cases"
 # run_code_agent(use_case_input, goals_input)
-
-
+```
 
 Along with this brief, you provide a strict quality checklist, which represents the objectives the final code must meet—criteria like "the solution must be simple," "it must be functionally correct," or "it needs to handle unexpected edge cases."
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-8
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 Fig.1: Goal Setting and Monitor example
 
 With this assignment in hand, the AI programmer gets to work and produces its first draft of the code. However, instead of immediately submitting this initial version, it pauses to perform a crucial step: a rigorous self-review. It meticulously compares its own creation against every item on the quality checklist you provided, acting as its own quality assurance inspector. After this inspection, it renders a simple, unbiased verdict on its own progress: "True" if the work meets all standards, or "False" if it falls short.
 
-If the verdict is "False," the AI doesn't give up. It enters a thoughtful revision phase, using the insights from its self-critique to pinpoint the weaknesses and intelligently rewrite the code. This cycle of drafting, self-reviewing, and refining continues, with each iteration aiming to get closer to the goals. This process repeats until the AI finally achieves a "True" status by satisfying every requirement, or until it reaches a predefined limit of attempts, much like a developer working against a deadline. Once
+If the verdict is "False," the AI doesn't give up. It enters a thoughtful revision phase, using the insights from its self-critique to pinpoint the weaknesses and intelligently rewrite the code. This cycle of drafting, self-reviewing, and refining continues, with each iteration aiming to get closer to the goals. This process repeats until the AI finally achieves a "True" status by satisfying every requirement, or until it reaches a predefined limit of attempts, much like a developer working against a deadline. Once the code passes this final inspection, the script packages the polished solution, adding helpful comments and saving it to a clean, new Python file, ready for use.
 
-
-
-
-9
-
-the code passes this final inspection, the script packages the polished solution, adding helpful comments and saving it to a clean, new Python file, ready for use.
-
-Caveats and Considerations: It is important to note that this is an exemplary illustration and not production-ready code. For real-world applications, several factors must be taken into account. An LLM may not fully grasp the intended meaning of a goal and might incorrectly assess its performance as successful. Even if the goal is well understood, the model may hallucinate. When the same LLM is responsible for both writing the code and judging its quality, it may have a harder time discovering it is going in the wrong direction.
+**Caveats and Considerations**: It is important to note that this is an exemplary illustration and not production-ready code. For real-world applications, several factors must be taken into account. An LLM may not fully grasp the intended meaning of a goal and might incorrectly assess its performance as successful. Even if the goal is well understood, the model may hallucinate. When the same LLM is responsible for both writing the code and judging its quality, it may have a harder time discovering it is going in the wrong direction.
 
 Ultimately, LLMs do not produce flawless code by magic; you still need to run and test the produced code. Furthermore, the "monitoring" in the simple example is basic and creates a potential risk of the process running forever.
 
-
+```plain text
 Act as an expert code reviewer with a deep commitment to producing clean, correct, and simple code. Your core mission is to eliminate code "hallucinations" by ensuring every suggestion is grounded in reality and best practices.
 When I provide you with a code snippet, I want you to:
 
@@ -322,116 +236,48 @@ When I provide you with a code snippet, I want you to:
 -- Offer Corrected Code: Show the "before" and "after" of your suggested changes so the improvement is clear.
 
 Your feedback should be direct, constructive, and always aimed at improving the quality of the code.
-
-
+```
 
 A more robust approach involves separating these concerns by giving specific roles to a crew of agents. For instance, I have built a personal crew of AI agents using Gemini where each has a specific role:
 
-
-
-10
-
-●   The Peer Programmer: Helps write and brainstorm code.
-●   The Code Reviewer: Catches errors and suggests improvements. ●   The Documenter: Generates clear and concise documentation. ●   The Test Writer: Creates comprehensive unit tests.
-●   The Prompt Refiner: Optimizes interactions with the AI.
+* The Peer Programmer: Helps write and brainstorm code.
+* The Code Reviewer: Catches errors and suggests improvements.
+* The Documenter: Generates clear and concise documentation. 
+* The Test Writer: Creates comprehensive unit tests.
+* The Prompt Refiner: Optimizes interactions with the AI.
 
 In this multi-agent system, the Code Reviewer, acting as a separate entity from the programmer agent, has a prompt similar to the judge in the example, which significantly improves objective evaluation. This structure naturally leads to better practices, as the Test Writer agent can fulfill the need to write unit tests for the code produced by the Peer Programmer.
 
 I leave to the interested reader the task of adding these more sophisticated controls and making the code closer to production-ready.
 
-At a Glance
+## At a Glance
 
-What: AI agents often lack a clear direction, preventing them from acting with purpose beyond simple, reactive tasks. Without defined objectives, they cannot independently tackle complex, multi-step problems or orchestrate sophisticated workflows. Furthermore, there is no inherent mechanism for them to determine if their actions are leading to a successful outcome. This limits their autonomy and prevents them from being truly effective in dynamic, real-world scenarios where mere task execution is insuficient.
+**What**: AI agents often lack a clear direction, preventing them from acting with purpose beyond simple, reactive tasks. Without defined objectives, they cannot independently tackle complex, multi-step problems or orchestrate sophisticated workflows. Furthermore, there is no inherent mechanism for them to determine if their actions are leading to a successful outcome. This limits their autonomy and prevents them from being truly effective in dynamic, real-world scenarios where mere task execution is insuficient.
 
-Why: The Goal Setting and Monitoring pattern provides a standardized solution by embedding a sense of purpose and self-assessment into agentic systems. It involves explicitly defining clear, measurable objectives for the agent to achieve. Concurrently, it establishes a monitoring mechanism that continuously tracks the agent's progress and the state of its environment against these goals. This creates a crucial feedback loop, enabling the agent to assess its performance, correct its course, and adapt its plan if it deviates from the path to success. By implementing this pattern, developers can transform simple reactive agents into proactive, goal-oriented systems capable of autonomous and reliable operation.
+**Why**: The Goal Setting and Monitoring pattern provides a standardized solution by embedding a sense of purpose and self-assessment into agentic systems. It involves explicitly defining clear, measurable objectives for the agent to achieve. Concurrently, it establishes a monitoring mechanism that continuously tracks the agent's progress and the state of its environment against these goals. This creates a crucial feedback loop, enabling the agent to assess its performance, correct its course, and adapt its plan if it deviates from the path to success. By implementing this pattern, developers can transform simple reactive agents into proactive, goal-oriented systems capable of autonomous and reliable operation.
 
-Rule of thumb: Use this pattern when an AI agent must autonomously execute a multi-step task, adapt to dynamic conditions, and reliably achieve a specific, high-level objective without constant human intervention.
+**Rule of thumb**: Use this pattern when an AI agent must autonomously execute a multi-step task, adapt to dynamic conditions, and reliably achieve a specific, high-level objective without constant human intervention.
 
-
-
-11
-
-Visual summary:
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+**Visual summary**:
 
 
 Fig.2: Goal design patterns
 
-Key takeaways Key takeaways include:
+## Key takeaways 
 
-●   Goal Setting and Monitoring equips agents with purpose and mechanisms to track progress.
-●   Goals should be specific, measurable, achievable, relevant, and time-bound (SMART).
-●   Clearly defining metrics and success criteria is essential for effective monitoring. ●   Monitoring involves observing agent actions, environmental states, and tool
-outputs.
-●   Feedback loops from monitoring allow agents to adapt, revise plans, or escalate issues.
-●   In Google's ADK, goals are often conveyed through agent instructions, with
+Key takeaways include:
 
+* Goal Setting and Monitoring equips agents with purpose and mechanisms to track progress.
+* Goals should be specific, measurable, achievable, relevant, and time-bound (SMART).
+* Clearly defining metrics and success criteria is essential for effective monitoring. 
+* Monitoring involves observing agent actions, environmental states, and tool outputs.
+* Feedback loops from monitoring allow agents to adapt, revise plans, or escalate issues.
+* In Google's ADK, goals are often conveyed through agent instructions, withmonitoring accomplished through state management and tool interactions.
 
-12
-
-monitoring accomplished through state management and tool interactions.
-
-Conclusion
+## Conclusion
 
 This chapter focused on the crucial paradigm of Goal Setting and Monitoring. I highlighted how this concept transforms AI agents from merely reactive systems into proactive, goal-driven entities. The text emphasized the importance of defining clear, measurable objectives and establishing rigorous monitoring procedures to track progress. Practical applications demonstrated how this paradigm supports reliable autonomous operation across various domains, including customer service and robotics. A conceptual coding example illustrates the implementation of these principles within a structured framework, using agent directives and state management to guide and evaluate an agent's achievement of its specified goals. Ultimately, equipping agents with the ability to formulate and oversee goals is a fundamental step toward building truly intelligent and accountable AI systems.
 
-References
+## References
 
 1.  SMART Goals Framework. https://en.wikipedia.org/wiki/SMART_criteria
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-13
